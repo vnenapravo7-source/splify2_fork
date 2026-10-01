@@ -37,7 +37,7 @@ jobs:
           set -eu
           npm run lint
           npx tsc -b
-          npm run check:cn
+          npm run build
 
       - name: Собрать движок для стендов
         run: |
