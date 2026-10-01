@@ -473,6 +473,7 @@ case "$url" in
         cp "$SANDBOX/srs/$svc.srs" "$out"
         ;;
     *rkn.lst) printf '10.0.0.0/8\n' > "$out" ;;
+    https://example.test/personal-domains.txt) cp "$SANDBOX/serve/personal-domains.txt" "$out" ;;
     *) exit 1 ;;
 esac
 exit 0
@@ -1341,6 +1342,7 @@ printf 'a.example\nb.example\nc.example\n' > "$T/serve/personal-domains.txt"
 printf 'manual.example\n' > "$T/lists/custom/domains/manual.lst"
 printf 'source=text\n' > "$T/lists/custom/domains/manual.lst.src"
 run_update
+if [ "$(grep -c . "$T/lists/custom/domains/personal.lst")" != 3 ]; then cat "$T/out-off"; tail -15 "$T/syslog"; fi
 check "свой URL-список обновляется без назначения правилу" "3" "$(grep -c . "$T/lists/custom/domains/personal.lst")"
 check "ручной список не перезаписывается" "manual.example" "$(cat "$T/lists/custom/domains/manual.lst")"
 printf '<html>blocked</html>\n' > "$T/serve/personal-domains.txt"
