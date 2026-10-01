@@ -1,11 +1,11 @@
 {
-  "name": "splify2-ui",
+  "name": "splify2-fork-ui",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "npm run check:cn && tsc -b && vite build && node scripts/pin-chunks.mjs && node scripts/check-dist.mjs",
+    "build": "node scripts/cn-equivalence.mjs && tsc -b && vite build && node scripts/pin-chunks.mjs && node scripts/check-dist.mjs",
     "check:cn": "node scripts/cn-equivalence.mjs",
     "test": "vitest run",
     "lint": "oxlint",

@@ -1117,7 +1117,7 @@ check "минимум — та константа, что объявлена в 
 reset_logs
 out="$(rpcd splify2_versions)"
 check "версии интерфейса берутся из релизов splify2 (R-042)" \
-      "yes" "$(grep -c 'api.github.com/repos/xyzmean/splify2' "$T/wget.log" >/dev/null 2>&1 && grep -q 'xyzmean/splify2' "$T/wget.log" && echo yes || echo no)"
+      "yes" "$(grep -c 'api.github.com/repos/vnenapravo7-source/splify2_fork' "$T/wget.log" >/dev/null 2>&1 && grep -q 'vnenapravo7-source/splify2_fork' "$T/wget.log" && echo yes || echo no)"
 check "тег с суффиксом отсеивается и здесь (R-042)" \
       '["26.9", "0.9.6", "0.9.4"]' "$(printf '%s' "$out" | jget versions)"
 # ---- версии формата «26.9 Andromeda» ------------------------------------------------
@@ -1232,7 +1232,7 @@ out="$(rpcd splify2_install '{"version":"0.7.7"}')"
 # Журнал теперь curl.log, а не wget.log: пакеты качаются общей download() (splify2#15),
 # у которой есть обход закрытого githubusercontent — своим wget этот метод больше не ходит.
 check "качается noarch-пакет интерфейса (R-042)" \
-      "https://github.com/xyzmean/splify2/releases/download/v0.7.7/luci-app-splify2-0.7.7-1_noarch.apk" \
+      "https://github.com/vnenapravo7-source/splify2_fork/releases/download/v0.7.7/luci-app-splify2-0.7.7-1_noarch.apk" \
       "$(grep 'luci-app-splify2' "$T/curl.log" | head -1)"
 check "установка интерфейса идёт тем же порядком: add первым (R-042)" \
       "add" "$(awk 'NR==1{print $1}' "$T/apk.log")"

@@ -55,7 +55,7 @@ describe('рельс разделов вместо вкладок (Andromeda 26.
     it('в рельсе четыре раздела, и это они', async () => {
         render(<Console />)
         await screen.findByRole('heading', { name: 'Маршрутизация работает' })
-        for (const name of ['Главная', 'Правила', 'VPN', 'Настройки'])
+        for (const name of ['Обзор', 'Правила', 'Подключения', 'Zapret', 'Настройки'])
             expect(nav(new RegExp(name))).toBeInTheDocument()
         // Прежние пункты стали подпунктами и в рельсе их нет.
         for (const gone of ['Каталог', 'Диагностика', 'Система'])
@@ -112,7 +112,6 @@ describe('рельс разделов вместо вкладок (Andromeda 26.
 
         // Кнопка «назад» внутри раздела — последняя: до неё в дереве стоят два пункта рельса.
         screen.getAllByRole('button', { name: /Настройки/ }).at(-1)!.click()
-        ;(await screen.findByRole('button', { name: /Дополнительно/ })).click()
         expect(await screen.findByText('Бекап настроек')).toBeInTheDocument()
     })
 
@@ -121,7 +120,7 @@ describe('рельс разделов вместо вкладок (Andromeda 26.
         // читает в рельсе одно, а над содержимым другое. У главной заголовок — вердикт.
         render(<Console />)
         await screen.findByRole('heading', { name: 'Маршрутизация работает' })
-        for (const name of ['Правила', 'VPN', 'Настройки']) {
+        for (const name of ['Правила', 'Подключения', 'Настройки']) {
             /* Без якоря `^`: у пункта рельса в доступном имени есть ещё счётчик, а у части
                сборок — ведущий пробел от декоративной иконки. Проверяется заголовок, не имя. */
             nav(new RegExp(name)).click()

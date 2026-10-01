@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { ArrowRight, LoaderCircle, Plus, Search, TriangleAlert, X } from 'lucide-react'
+import { ArrowRight, LoaderCircle, Pencil, Plus, Search, TriangleAlert, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { SubBlock, TunnelBlock, type Facts } from '@/components/OutputCards'
 import { deadline, rpc, type SubQuota } from '@/lib/rpc'
 import { subsRemember, subsRemembered } from '@/lib/subs'
 import { human, type DiagCheck, type Live } from '@/lib/live'
-import { usePending } from '@/lib/pending'
+import { pending, usePending } from '@/lib/pending'
 import { ON_FAIL_TEXT, type Channel, type ChannelStatus, type OutputStatus, devList, isPart } from '@/lib/model'
 import { country } from '@/lib/geo'
 import Flag from '@/components/Flag'
@@ -235,7 +235,7 @@ export default function Home({
 
     return (
         <div className="space-y-4">
-            <div className="flex flex-col items-stretch gap-3 sm:flex-row sm:items-start sm:justify-between">
+            <div className="sp-status-surface flex flex-col items-stretch gap-3 sm:flex-row sm:items-start sm:justify-between">
                 <div className="min-w-0">
                     <div className="flex items-center gap-2.5">
                         <span
@@ -270,6 +270,7 @@ export default function Home({
                 <button
                     type="button"
                     onClick={() => onSection('settings', 'diag')}
+                    title={v.notes[0]?.what || v.why}
                     className={[
                         'flex w-full items-center gap-2 rounded-xl border p-3 text-left text-[13px] transition-colors',
                         live.diag?.fail
@@ -367,7 +368,7 @@ export default function Home({
                 </div>
             )}
 
-            <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(0,22rem)]">
+            <div className="sp-overview-grid">
                 <div className="min-w-0 space-y-4">
                     <RulesBoard
                         live={live}
@@ -375,11 +376,11 @@ export default function Home({
                         facts={facts}
                         onSection={onSection}
                     />
-                    <ExplainCard />
-                </div>
+                    </div>
                 <div className="min-w-0">
                     <OutputsColumn live={live} facts={facts} busy={busy} onRefresh={refresh} />
                 </div>
+                <div className="sp-checker"><ExplainCard /></div>
             </div>
         </div>
     )
@@ -519,8 +520,13 @@ function RuleRow({
             {/* Строка читается как предложение: правило → куда оно ведёт СЕЙЧАС. Ниже, мельче,
                 то, что спрашивают вторым: сколько через него прошло и что стоит в запасе. */}
             <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+                <input type="checkbox" aria-label={`Включить правило ${row.name}`} checked={row.enabled} disabled={!spec} onChange={(e) => {
+                    if (!spec) return
+                    pending.edit({ ...spec, channels: spec.channels.map(c => c.name === row.name ? { ...c, enabled: e.currentTarget.checked } : c) })
+                }} className="sp-rule-check" />
                 <span className="w-4 shrink-0 text-[11px] tabular-nums text-muted-foreground">{n}</span>
                 <span className="min-w-0 max-w-full truncate text-[13px] font-medium">{row.name}</span>
+                <button type="button" aria-label={`Редактировать правило ${row.name}`} onClick={() => onSection('rules', row.name)} className="sp-rule-edit text-primary"><Pencil className="h-4 w-4" aria-hidden="true" /></button>
                 {!row.enabled && (
                     <span className="text-[11px] text-muted-foreground">выключено</span>
                 )}
@@ -679,7 +685,7 @@ function OutputsColumn({
 /** «Куда пойдёт запрос» — единственный вопрос, который человек задаёт посреди работы, и
  *  отвечает на него ЖИВОЕ ядро, а не настройка. Поэтому поле здесь, на главной, а не в
  *  диагностике: спрашивают его до того, как решат, что что-то сломано. */
-const SUGGESTED_DOMAINS = ['youtube.com', 'instagram.com', 'discord.com', 'rutracker.org']
+const SUGGESTED_DOMAINS = ['youtube.com', 'instagram.com', 'discord.com', 'ru-tracker.org', 'ozon.ru']
 
 function ExplainCard() {
     const [q, setQ] = useState('')

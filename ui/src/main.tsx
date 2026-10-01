@@ -1,6 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot, type Root } from 'react-dom/client'
 import './index.css'
+import './expressive.css'
 import App from './App.tsx'
 
 // The LuCI host view (view/splify/home.js) loads this module ONCE with a stable

@@ -1,131 +1,35 @@
-import { useEffect, useState } from 'react'
-import { ChevronLeft, Globe, Network, ShieldCheck } from 'lucide-react'
+import { useState } from 'react'
+import { ChevronLeft, Globe, Layers, Lock, Network, ShieldCheck } from 'lucide-react'
 import HubRow from '@/components/HubRow'
 import PoolList from '@/components/PoolList'
 import IfacesPanel from '@/components/IfacesPanel'
 import VlessScreen from '@/components/VlessScreen'
 import XsteerPanel from '@/components/XsteerPanel'
-import { rpc } from '@/lib/rpc'
-import { usePending } from '@/lib/pending'
-import { devList, isPart } from '@/lib/model'
-import { type Live } from '@/lib/live'
+import Doh from '@/components/sections/Doh'
+import type { Live } from '@/lib/live'
 
-/** VPN: чем роутер выходит наружу.
- *
- *  Три входа и один список. Входы отвечают на «что у меня есть»: свои туннели, узлы подписки,
- *  звезда xsteer. Список ниже — выходы, то есть то, во что правила ведут трафик; выход
- *  собирается из того, что нашлось за тремя входами.
- *
- *  Подпункт открывается НА МЕСТЕ раздела, а не отдельной вкладкой рельса: рельс отвечает за
- *  четыре роли, и раздувать его до четырнадцати пунктов значит вернуть строку вкладок, из
- *  которой видно треть. */
-
-type Screen = 'root' | 'ifaces' | 'vless' | 'xsteer'
-
-const TITLE: Record<Exclude<Screen, 'root'>, string> = {
-    ifaces: 'Свои туннели',
-    vless: 'VLESS',
-    xsteer: 'XSTEER',
-}
-
+type Screen = 'root' | 'sources' | 'outputs' | 'doh' | 'ifaces' | 'vless' | 'xsteer'
+const TITLE = { sources: 'Источники', outputs: 'Выходы VPN', doh: 'DoH', ifaces: 'Свои туннели', vless: 'Подписки', xsteer: 'XSTEER' }
 export default function Vpn({ live }: { live: Live }) {
     const [screen, setScreen] = useState<Screen>('root')
-    /** Открыт редактор выхода. Тогда раздел показывает ТОЛЬКО его: три строки-входа сверху
-     *  относятся к разделу, а не к правимому выходу, и над формой читались как её часть. */
-    const [editing, setEditing] = useState(false)
-    const { spec } = usePending()
-    const [devices, setDevices] = useState<{ name: string; up: boolean; kind: string }[]>([])
-
-    useEffect(() => {
-        rpc.devices().then((d) => setDevices(d.devices || [])).catch(() => setDevices([]))
-    }, [])
-
-    if (screen !== 'root') {
-        return (
-            <div className="space-y-4">
-                {/* Одна строка: откуда пришли и где мы. Заголовок раздела над ней уже стоит,
-                    и третья строка «VPN / ‹ VPN / VLESS» читалась как заикание. */}
-                <div className="flex flex-wrap items-baseline gap-2">
-                    <button
-                        type="button"
-                        onClick={() => setScreen('root')}
-                        className="flex items-center gap-1 text-sm text-primary"
-                    >
-                        <ChevronLeft className="h-4 w-4" aria-hidden="true" /> VPN
-                    </button>
-                    <span className="text-sm text-muted-foreground">/</span>
-                    <h2 className="sp-title">{TITLE[screen]}</h2>
-                </div>
-                {screen === 'ifaces' && <IfacesPanel live={live} />}
-                {screen === 'vless' && <VlessScreen />}
-                {screen === 'xsteer' && <XsteerPanel live={live} />}
-            </div>
-        )
-    }
-
-    const outputs = Object.values(spec?.outputs || {})
-    /* Названо ровно то, что человек увидит, открыв подпункт: какие устройства взяты в работу,
-     * сколько локаций подписки заведено, какие устройства xsteer есть. Служебные части пулов
-     * считаются локациями своей подписки, а их устройства — не «свои туннели». */
-    const partNames = new Set(outputs.filter((o) => isPart(o)).map((o) => o.name))
-    const ifaceDevs = outputs
-        .filter((o) => o.kind === 'interface')
-        .flatMap((o) => devList(o))
-        .filter((d) => !partNames.has(d))
-    const vless = outputs.filter((o) => o.kind === 'vless')
-    const vlessCount = vless.reduce(
-        (n, o) => n + Math.max(1, o.nodes?.length || 0),
-        0,
-    )
-    const subCount = new Set(vless.map((o) => o.sub_file || '')).size
-    const xs = devices.filter((d) => d.kind === 'xsteer' || /^xs-/.test(d.name)).map((d) => d.name)
-
-    /* PoolList стоит на ОДНОМ месте дерева в обоих состояниях: редактор — его внутреннее
-     * состояние, и отдельная ветка `if (editing) return <PoolList/>` пересоздавала бы список
-     * с нуля, то есть закрывала бы редактор в момент открытия. */
-    return (
-        <div className="space-y-4">
-            {!editing && <div className="space-y-2.5">
-                {/* «Свои туннели», а не «VPN»: строка «VPN» внутри раздела VPN не говорила,
-                    что за ней — WireGuard, AmneziaWG и прочие устройства самого роутера. */}
-                <HubRow
-                    icon={ShieldCheck}
-                    title="Свои туннели"
-                    state={ifaceDevs.length ? `взяты: ${ifaceDevs.join(', ')}` : 'WireGuard, AmneziaWG, OpenVPN — ни один не взят'}
-                    onClick={() => setScreen('ifaces')}
-                />
-                <HubRow
-                    icon={Globe}
-                    title="VLESS"
-                    /* «ВЗЯТЫ», а не «подписок» — и это не придирка к слову. Оба числа
-                       считаются по ВЫХОДАМ спеки, то есть говорят, сколько подписок и
-                       локаций взято в работу. Подпись «подписок: 1» при двух заведённых
-                       читалась как перечень того, что у человека есть, — и выглядела
-                       сломанным счётчиком. Соседняя строка про туннели говорит «взяты: wg0»
-                       ровно про то же самое; теперь обе говорят одинаково.
-
-                       Пусто — «ни одна не взята», а не «подписок нет»: подписки могут быть
-                       заведены и не использоваться ни одним выходом, и прежний текст в этом
-                       случае прямо врал. */
-                    state={
-                        vlessCount
-                            ? `взяты: ${subCount === 1 ? '1 подписка' : subCount >= 2 && subCount <= 4 ? `${subCount} подписки` : `${subCount} подписок`} · ${vlessCount === 1 ? '1 локация' : vlessCount >= 2 && vlessCount <= 4 ? `${vlessCount} локации` : `${vlessCount} локаций`}`
-                            : 'ни одна подписка не взята выходом'
-                    }
-                    onClick={() => setScreen('vless')}
-                />
-                <HubRow
-                    icon={Network}
-                    title="XSTEER"
-                    state={xs.length ? xs.join(', ') : 'интерфейсов нет'}
-                    onClick={() => setScreen('xsteer')}
-                />
-            </div>}
-
-            <div className="space-y-3">
-                {!editing && <h2 className="sp-sub">Выходы</h2>}
-                <PoolList live={live} onEditingChange={setEditing} />
-            </div>
-        </div>
-    )
+    if (screen === 'root') return <div className="sp-connection-grid">
+        <HubRow icon={Globe} title="Источники" state="Подписки, свои туннели и XSTEER" onClick={() => setScreen('sources')} />
+        <HubRow icon={Layers} title="Выходы VPN" state="Пулы, порядок выбора и резервные подключения" onClick={() => setScreen('outputs')} />
+        <HubRow icon={Lock} title="DoH" state="Шифрованный DNS и запросы через туннель" onClick={() => setScreen('doh')} />
+    </div>
+    const nested = ['ifaces', 'vless', 'xsteer'].includes(screen)
+    return <div className="space-y-4">
+        <button type="button" className="flex items-center gap-1 text-sm text-primary" onClick={() => setScreen(nested ? 'sources' : 'root')}><ChevronLeft className="h-4 w-4" aria-hidden="true" /> {nested ? 'Источники' : 'Подключения'}</button>
+        <h2 className="sp-title">{TITLE[screen]}</h2>
+        {screen === 'sources' && <div className="space-y-3">
+            <HubRow icon={Globe} title="Подписки" state="Узлы, ссылки и автообновление" onClick={() => setScreen('vless')} />
+            <HubRow icon={ShieldCheck} title="Свои туннели" state="WireGuard, AmneziaWG, OpenVPN" onClick={() => setScreen('ifaces')} />
+            <HubRow icon={Network} title="XSTEER" state="Интерфейсы и параметры" onClick={() => setScreen('xsteer')} />
+        </div>}
+        {screen === 'outputs' && <PoolList live={live} />}
+        {screen === 'doh' && <Doh live={live} />}
+        {screen === 'ifaces' && <IfacesPanel live={live} />}
+        {screen === 'vless' && <VlessScreen />}
+        {screen === 'xsteer' && <XsteerPanel live={live} />}
+    </div>
 }

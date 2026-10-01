@@ -90,6 +90,8 @@ function overlaps(a: Channel, b: Channel) {
 }
 
 interface Props {
+    editName?: string | null
+    onEditUsed?: () => void
     live: Live
     /** Запись каталога, которую попросили «в правило» с другой вкладки. */
     wanted?: ServiceEntry | null
@@ -105,7 +107,7 @@ interface Props {
 }
 
 export default function RulesTab({
-    live, wanted, onWantedUsed, addNow, onAddUsed, onGoOutbounds,
+    live, wanted, onWantedUsed, addNow, onAddUsed, onGoOutbounds, editName, onEditUsed,
 }: Props) {
     const [spec, setSpec] = useState<Spec | null>(null)
     const [catalogServices, setServices] = useState<ServiceEntry[]>([])
@@ -116,6 +118,12 @@ export default function RulesTab({
     )
     const [open, setOpen] = useState<number | null>(null)
     const [search, setSearch] = useState('')
+    useEffect(() => {
+        if (!spec || !editName) return
+        const index = spec.channels.findIndex(c => c.name === editName)
+        if (index >= 0) setOpen(index)
+        onEditUsed?.()
+    }, [spec, editName, onEditUsed])
 
     useEffect(() => {
         /* Спека приходит из общего хранилища (pending), а не своим запросом: хранилище

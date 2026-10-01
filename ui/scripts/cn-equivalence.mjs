@@ -67,7 +67,7 @@ for (const file of walk(SRC)) {
   if (!/\.(ts|tsx|js|jsx|css)$/.test(file)) continue
   // The merger's own group-name table ("align-items", "font-weight", …) is not
   // app vocabulary — scraping it would test invented classes, not real ones.
-  if (file.endsWith(`lib${'/'}tw-merge.js`)) continue
+  if (file.replaceAll('\\', '/').endsWith('lib/tw-merge.js')) continue
   const text = readFileSync(file, 'utf8')
   for (const t of tokensFrom(text)) tokens.add(t)
   for (const s of stringsFrom(text)) literals.add(s)

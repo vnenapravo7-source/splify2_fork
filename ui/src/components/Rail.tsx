@@ -1,4 +1,4 @@
-import { House, Lock, Route, Settings, ShieldCheck, Waves } from 'lucide-react'
+import { House, Route, Settings, ShieldCheck, Waves } from 'lucide-react'
 import EngineToggle from '@/components/EngineToggle'
 import { type Live } from '@/lib/live'
 import { assetUrl } from '@/lib/assets'
@@ -25,15 +25,10 @@ import { type SectionId } from '@/lib/sections'
  *  часть подписи. */
 
 const ITEMS: { id: SectionId; label: string; icon: typeof House }[] = [
-    { id: 'home', label: 'Главная', icon: House },
+    { id: 'home', label: 'Обзор', icon: House },
     { id: 'rules', label: 'Правила', icon: Route },
-    { id: 'vpn', label: 'VPN', icon: ShieldCheck },
-    /* DoH и Zapret — РАЗДЕЛЫ, а не подпункты настроек, и это не про важность, а про то, как
-       ими пользуются. В настройки заходят раз в жизни; сюда — каждый раз, когда что-то
-       перестало открываться: сменить резолвер, сменить стратегию, посмотреть, что показала
-       проверка. Пункт, за которым ходят регулярно, обязан быть в рельсе — иначе его ищут
-       прокруткой по складу, а именно от склада («Логи steer») этот дизайн и уходил. */
-    { id: 'doh', label: 'DoH', icon: Lock },
+    { id: 'vpn', label: 'Подключения', icon: ShieldCheck },
+    /* DoH is available inside connections; Zapret remains independent. */
     { id: 'zapret', label: 'Zapret', icon: Waves },
     { id: 'settings', label: 'Настройки', icon: Settings },
 ]
@@ -60,7 +55,7 @@ export default function Rail({ live, section, onSection, counts }: RailProps) {
             {/* ── широкий экран: колонка слева ─────────────────────────────────────── */}
             {/* self-stretch: у подложки есть нижняя граница высоты (см. .sp-root), и рельс
                 обязан тянуться вместе с ней — иначе под ним видна ступенька другого фона. */}
-            <aside className="hidden shrink-0 self-stretch flex-col gap-4 border-r border-border bg-rail p-4 lg:flex lg:w-[236px]">
+            <aside className="hidden shrink-0 self-stretch flex-col gap-4 border-r border-border bg-rail p-4 lg:flex lg:w-[176px]">
                 <div className="flex items-center gap-2.5 px-1.5">
                     {/* Логотип — тот же знак, что на иконке (favicon.svg из сборки), а не квадрат
                         с буквой, который стоял здесь заглушкой (владелец: «у нас же логотип
@@ -94,7 +89,7 @@ export default function Rail({ live, section, onSection, counts }: RailProps) {
                                 aria-current={on ? 'page' : undefined}
                                 onClick={() => onSection(id)}
                                 className={[
-                                    'flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm transition-colors duration-200',
+                                    'sp-nav-item flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm transition-colors duration-200',
                                     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary',
                                     on
                                         ? 'bg-primary/10 font-medium text-primary'

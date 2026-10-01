@@ -6,9 +6,9 @@ export type SectionId = 'home' | 'rules' | 'vpn' | 'doh' | 'zapret' | 'settings'
 /** Заголовки разделов. Здесь, а не в рельсе, потому что раздел печатает своё имя сам —
  *  и оно обязано совпадать с пунктом рельса дословно. */
 export const SECTION_TITLE: Record<SectionId, string> = {
-    home: 'Главная',
+    home: 'Обзор',
     rules: 'Правила',
-    vpn: 'VPN',
+    vpn: 'Подключения',
     doh: 'DoH',
     zapret: 'Zapret',
     settings: 'Настройки',

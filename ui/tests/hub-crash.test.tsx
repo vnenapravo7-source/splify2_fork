@@ -35,11 +35,12 @@ describe('вкладки не гаснут после первого опрос�
     it('VPN: список входов остаётся после ответов роутера', async () => {
         render(<Console />)
         await screen.findByRole('heading', { name: 'Маршрутизация работает' })
-        nav(/VPN/).click()
+        nav(/Подключения/).click()
+        ;(await screen.findByRole('button', { name: /Источники/ })).click()
         // Имя «VLESS» есть и у входа, и у кнопки создания выхода ниже — берём первое.
-        expect((await screen.findAllByRole('button', { name: /VLESS/ }))[0]).toBeInTheDocument()
+        expect((await screen.findAllByRole('button', { name: /^\s*Подписки/ }))[0]).toBeInTheDocument()
         await new Promise((r) => setTimeout(r, 300))
-        expect(screen.getAllByRole('button', { name: /VLESS/ })[0]).toBeInTheDocument()
+        expect(screen.getAllByRole('button', { name: /^\s*Подписки/ })[0]).toBeInTheDocument()
         expect(screen.getAllByRole('button', { name: /XSTEER/ })[0]).toBeInTheDocument()
     })
 
@@ -47,20 +48,22 @@ describe('вкладки не гаснут после первого опрос�
         render(<Console />)
         await screen.findByRole('heading', { name: 'Маршрутизация работает' })
         nav(/Настройки/).click()
-        expect(await screen.findByRole('button', { name: /Каталог/ })).toBeInTheDocument()
+        expect(await screen.findByRole('button', { name: /Общее/ })).toBeInTheDocument()
         await new Promise((r) => setTimeout(r, 300))
-        expect(screen.getByRole('button', { name: /Каталог/ })).toBeInTheDocument()
+        expect(screen.getByRole('button', { name: /Общее/ })).toBeInTheDocument()
     })
 
     it('переход VPN → Настройки → VPN ничего не гасит', async () => {
         render(<Console />)
         await screen.findByRole('heading', { name: 'Маршрутизация работает' })
-        nav(/VPN/).click()
-        await screen.findByRole('button', { name: /VLESS/ })
+        nav(/Подключения/).click()
+        ;(await screen.findByRole('button', { name: /Источники/ })).click()
+        await screen.findByRole('button', { name: /^\s*Подписки/ })
         nav(/Настройки/).click()
-        await screen.findByRole('button', { name: /Каталог/ })
-        nav(/VPN/).click()
-        expect(await screen.findByRole('button', { name: /VLESS/ })).toBeInTheDocument()
+        await screen.findByRole('button', { name: /Общее/ })
+        nav(/Подключения/).click()
+        ;(await screen.findByRole('button', { name: /Источники/ })).click()
+        expect(await screen.findByRole('button', { name: /^\s*Подписки/ })).toBeInTheDocument()
     })
 
     it('вход в подпункт и обратно', async () => {
@@ -70,7 +73,7 @@ describe('вкладки не гаснут после первого опрос�
         ;(await screen.findByRole('button', { name: /Общее/ })).click()
         await waitFor(() => expect(screen.getByRole('heading', { name: 'Общее' })).toBeInTheDocument())
         screen.getAllByRole('button', { name: /Настройки/ }).at(-1)!.click()
-        expect(await screen.findByRole('button', { name: /Каталог/ })).toBeInTheDocument()
+        expect(await screen.findByRole('button', { name: /Общее/ })).toBeInTheDocument()
     })
 })
 
@@ -112,7 +115,8 @@ describe('выходы: список и состав', () => {
     it('список показывает выход, его состав и страну', async () => {
         render(<Console />)
         await screen.findByRole('heading', { name: 'Маршрутизация работает' })
-        screen.getAllByRole('button', { name: /VPN/ })[0].click()
+        screen.getAllByRole('button', { name: /Подключения/ })[0].click()
+        ;(await screen.findByRole('button', { name: /Выходы VPN/ })).click()
         expect(await screen.findByText('vpn')).toBeInTheDocument()
         expect(await screen.findByText(/Нидерланды/)).toBeInTheDocument()
     })
@@ -120,7 +124,8 @@ describe('выходы: список и состав', () => {
     it('состав выхода открывается и предлагает свои туннели и подписки', async () => {
         render(<Console />)
         await screen.findByRole('heading', { name: 'Маршрутизация работает' })
-        screen.getAllByRole('button', { name: /VPN/ })[0].click()
+        screen.getAllByRole('button', { name: /Подключения/ })[0].click()
+        ;(await screen.findByRole('button', { name: /Выходы VPN/ })).click()
         ;(await screen.findByRole('button', { name: /Добавить выход/ })).click()
         expect(await screen.findByText('Что можно взять')).toBeInTheDocument()
         expect(screen.getByText('Свои туннели')).toBeInTheDocument()

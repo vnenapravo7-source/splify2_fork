@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils"
 // Argon buttons: .25rem radius, flat fills, `transition:all .2s`, hover = a
 // small lift shadow (cascade.css .btn:hover) instead of a colour shift.
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium transition-all duration-200 hover:shadow-[0_0_2px_rgba(0,0,0,0.12),0_2px_2px_rgba(0,0,0,0.2)] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "sp-button inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium transition-all duration-200 hover:shadow-[0_0_2px_rgba(0,0,0,0.12),0_2px_2px_rgba(0,0,0,0.2)] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {

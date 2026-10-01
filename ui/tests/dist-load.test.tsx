@@ -94,16 +94,16 @@ describe.skipIf(!existsSync(DIST))('собранный бандл', () => {
             b.click()
         }
 
-        click(/^\s*VPN/)
+        click(/^\s*Подключения/)
         await new Promise((r) => setTimeout(r, 900))
         // Раздел обязан остаться открытым: именно здесь он гас и подменялся главной.
-        expect(root.querySelector('main')?.textContent).toMatch(/VLESS/)
+        expect(root.querySelector('main')?.textContent).toMatch(/Источники/)
         expect(root.querySelector('main')?.textContent).not.toMatch(/Маршрутизация работает/)
 
         click(/^\s*Настройки/)
         await new Promise((r) => setTimeout(r, 900))
         console.log('SETTINGS:', root.querySelector('main')?.textContent?.slice(0, 400))
-        click(/^\s*VPN/)
+        click(/^\s*Подключения/)
         await new Promise((r) => setTimeout(r, 40))
         console.log('AFTER 40ms:', root.querySelector('main')?.textContent?.slice(0, 120))
         console.log('ERRORS SO FAR:', errors.map((e) => String((e as Error)?.stack || e).slice(0, 300)))

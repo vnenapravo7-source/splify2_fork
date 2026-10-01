@@ -371,7 +371,7 @@ case "$2" in
         # поэтому `apk upgrade` их не видит и обновить интерфейс можно было только по
         # ssh — при том что движок из интерфейса ставится с первого дня. Асимметрия
         # заметная: обновлять умели то, что реже меняется.
-        gh_load xyzmean/splify2
+        gh_load vnenapravo7-source/splify2_fork
         json_init
         json_add_string current "$(pkg_version luci-app-splify2)"
         gh_add_releases
@@ -391,7 +391,7 @@ case "$2" in
             ''|*[!0-9.]*) json_add_boolean ok 0; json_add_string error "в версии допустимы только цифры и точки"; json_dump; exit 0 ;;
         esac
         name="luci-app-splify2-${ver}-1_$(pkg_noarch)"
-        url="https://github.com/xyzmean/splify2/releases/download/v${ver}/${name}"
+        url="https://github.com/vnenapravo7-source/splify2_fork/releases/download/v${ver}/${name}"
         tmp="/tmp/${name}"
         rm -f "$tmp"
         # Через download(), а не своим wget: у этой ссылки тот же изъян, что у списков —

@@ -1,0 +1,54 @@
+/* Glass surfaces + Material 3 Expressive controls, scoped to the Splify console.
+   Native popovers remain opaque. No new fonts, assets or runtime libraries. */
+.sp-root {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif !important;
+  --sp-primary: #7c3cce; --sp-primary-foreground: #fff; --sp-ring: #7c3cce;
+  --sp-background: #f0eafa; --sp-foreground: #2c2038; --sp-card-foreground: #2c2038;
+  --sp-card: #ffffff; --sp-rail: #ffffff; --sp-fg2: #655371;
+  --sp-muted-foreground: #766480; --sp-accent: #e9d9fb; --sp-accent-foreground: #2c2038;
+  --sp-secondary: #eadbfb; --sp-secondary-foreground: #38234a;
+  --sp-popover: #fcf7ff; --sp-popover-foreground: #2c2038;
+  --sp-border: #dacde5; --sp-input: #cfbbdf;
+  --sp-glass: #ffffff80; --sp-chrome: #ffffff48; --sp-shape: #ecdef9db;
+  --sp-card-shadow: 0 12px 30px #55307712;
+  background: radial-gradient(ellipse at 86% 20%,#c7a4ff,transparent 43%), radial-gradient(ellipse at 15% 65%,#e4b6ec,transparent 50%),radial-gradient(ellipse at 80% 90%,#b9bcff,transparent 45%),var(--sp-background) !important;
+  border-radius: 26px !important; isolation: isolate !important;
+}
+.dark .sp-root {
+  --sp-primary: #ba98ff; --sp-primary-foreground: #261238; --sp-ring: #ba98ff;
+  --sp-background: #1d1529; --sp-foreground: #f3ecfa; --sp-card-foreground: #f3ecfa;
+  --sp-card: #30243f; --sp-rail: #261c33; --sp-fg2: #cbbbd9;
+  --sp-muted-foreground: #b9a5c9; --sp-accent: #483260; --sp-accent-foreground: #f3ecfa;
+  --sp-secondary: #483260; --sp-secondary-foreground: #f3ecfa;
+  --sp-popover: #30243f; --sp-popover-foreground: #f3ecfa;
+  --sp-border: #705480; --sp-input: #856895;
+  --sp-glass: #2b213985; --sp-chrome: #22192e78; --sp-shape: #3d2854e5;
+  background: radial-gradient(ellipse at 86% 20%,#65408b,transparent 43%),radial-gradient(ellipse at 15% 65%,#643567,transparent 50%),radial-gradient(ellipse at 80% 90%,#353b75,transparent 45%),var(--sp-background) !important;
+}
+.sp-root aside,.sp-root .sp-bottom-bar { background: var(--sp-chrome) !important; backdrop-filter: blur(28px) saturate(140%) !important; }
+.sp-root .sp-glass-card,.sp-root .sp-hub-row { background: var(--sp-glass) !important; backdrop-filter:blur(28px) saturate(145%) !important; border-radius:26px !important; border-color:color-mix(in srgb,var(--sp-border) 55%,transparent) !important; box-shadow:var(--sp-card-shadow) !important; }
+.sp-root .sp-button,.sp-root .sp-nav-item { border-radius: 24px !important; }
+.sp-root .sp-button { min-height:40px !important; }
+.sp-root .sp-hub-row { min-height:86px !important; padding:19px !important; }
+.sp-root .sp-hub-row:hover { background:var(--sp-accent) !important; }
+.sp-root .sp-hub-row > span:first-child { border-radius:17px !important; width:44px !important; height:44px !important; }
+.sp-root .sp-backup-inline { margin-top:28px !important; padding-top:20px !important; border-top:1px solid var(--sp-border) !important; }
+.sp-root .sp-backup-inline .sp-glass-card { background:transparent !important; box-shadow:none !important; border:0 !important; backdrop-filter:none !important; }
+.sp-root .sp-segments { display:flex !important; flex-wrap:wrap !important; gap:6px !important; padding:6px !important; border-radius:28px !important; width:fit-content !important; background:var(--sp-glass) !important; backdrop-filter:blur(28px) !important; }
+.sp-root .sp-segments button { padding:10px 17px !important; border-radius:24px !important; color:var(--sp-fg2) !important; }
+.sp-root .sp-segments button[aria-pressed=true] { background:var(--sp-primary) !important; color:var(--sp-primary-foreground) !important; }
+.sp-root .sp-connection-grid { display:grid !important; grid-template-columns:repeat(2,minmax(0,1fr)) !important; gap:16px !important; }
+.sp-root .sp-connection-grid .sp-hub-row { min-height:145px !important; align-items:start !important; padding:24px !important; background:var(--sp-shape) !important; border-radius:28px 28px 10px 28px !important; }
+.sp-root .sp-connection-grid .sp-hub-row:nth-child(2) { border-radius:28px 10px 28px 28px !important; }
+.sp-root .sp-connection-grid .sp-hub-row:nth-child(3) { background:var(--sp-glass) !important; border-radius:10px 28px 28px 28px !important; }
+.sp-root .sp-overview-grid { display:flex !important; flex-direction:column !important; gap:18px !important; }
+.sp-root .sp-overview-grid > div { width:100% !important; min-width:0 !important; }
+.sp-root .sp-checker { order:-1 !important; }
+.sp-root .sp-checker .sp-glass-card { background:var(--sp-shape) !important; border-radius:30px 30px 12px 30px !important; }
+.sp-root .sp-status-surface { background:var(--sp-glass) !important; backdrop-filter:blur(28px) !important; padding:20px !important; border-radius:28px !important; }
+.sp-root .sp-rule-check { appearance:auto !important; accent-color:var(--sp-primary) !important; width:18px !important; height:18px !important; flex-shrink:0 !important; }
+.sp-root .sp-rule-edit { display:inline-flex !important; align-items:center !important; justify-content:center !important; min-width:34px !important; min-height:34px !important; border-radius:16px !important; }
+.sp-root .sp-rule-edit:hover { background:var(--sp-accent) !important; }
+@supports not (backdrop-filter:blur(1px)) { .sp-root .sp-glass-card,.sp-root .sp-hub-row,.sp-root aside,.sp-root .sp-bottom-bar { background:var(--sp-card) !important; } }
+@media(max-width:767px) { .sp-root .sp-connection-grid { grid-template-columns:1fr !important; } .sp-root .sp-glass-card { border-radius:22px !important; } .sp-root .sp-hub-row { padding:16px !important; } .sp-root .sp-connection-grid .sp-hub-row { min-height:110px !important; } }
+@media(prefers-reduced-transparency:reduce) { .sp-root { --sp-glass:var(--sp-card); --sp-chrome:var(--sp-rail); } }

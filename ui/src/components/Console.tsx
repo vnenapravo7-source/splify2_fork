@@ -27,7 +27,7 @@ import EngineToggle from '@/components/EngineToggle'
  *  Сохранение автоматическое (lib/pending.ts): кнопок «Сохранить» в разделах нет, применение —
  *  одна плавающая пилюля (ApplyPill) на весь экран. */
 
-const RulesTab = lazy(() => import('@/components/tabs/RulesTab'))
+const RulesTab = lazy(() => import('@/components/sections/Rules'))
 const Vpn = lazy(() => import('@/components/sections/Vpn'))
 const Doh = lazy(() => import('@/components/sections/Doh'))
 const Zapret = lazy(() => import('@/components/sections/Zapret'))
@@ -50,10 +50,12 @@ export default function Console() {
     const [addRule, setAddRule] = useState(false)
     /** Подпункт, с которого открыть раздел. Строка находки на главной ведёт в диагностику
      *  внутри настроек, а не в перечень входов. */
+    const [editName, setEditName] = useState<string | null>(null)
     const [sub, setSub] = useState<string | null>(null)
     const go = (s: SectionId, at?: string) => {
         setSection(s)
         setSub(at ?? null)
+        if (s === 'rules' && at) setEditName(at)
     }
 
     /* Спека нужна рельсу для счётчика правил, а он виден на всех разделах — значит загрузить её
@@ -125,7 +127,7 @@ export default function Console() {
                     {/* Имя раздела печатает ОБОЛОЧКА, а не сам раздел: оно обязано совпадать
                         с пунктом рельса дословно, а два места с одной строкой расходятся. У
                         обзора заголовок другой — им служит вердикт, и второго над ним не надо. */}
-                    {section !== 'home' && (
+                    {(
                         <h1 className="sp-title mb-3">{SECTION_TITLE[section]}</h1>
                     )}
 
@@ -142,6 +144,8 @@ export default function Console() {
                         )}
                         {section === 'rules' && (
                             <RulesTab
+                                editName={editName}
+                                onEditUsed={() => setEditName(null)}
                                 live={live}
                                 wanted={wanted}
                                 onWantedUsed={() => setWanted(null)}
@@ -157,10 +161,6 @@ export default function Console() {
                             <Settings
                                 live={live}
                                 initial={sub === 'diag' ? 'diag' : undefined}
-                                onUseInRule={(l) => {
-                                    setWanted(l)
-                                    go('rules')
-                                }}
                             />
                         )}
                     </Suspense>

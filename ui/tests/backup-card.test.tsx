@@ -166,15 +166,14 @@ describe('карточка бекапа', () => {
 //
 // До Andromeda 26.9 разделом была вкладка «Логи steer»: в неё въехало всё, что не влезло в
 // остальные три, — диагностика, счётчики, движок, самообновление и архив. Новое меню это
-// разделение закрепляет: архив лежит в «Настройках», в подпункте «Дополнительно».
+// разделение закрепляет: архив лежит внизу настроек без отдельного подпункта.
 describe('где живёт карточка архива', () => {
     it('в «Настройках», в подпункте «Дополнительно»', async () => {
         const { default: Settings } = await import('@/components/sections/Settings')
         const { live } = await import('./fixtures')
         const { rpc } = await import('@/lib/rpc')
         vi.spyOn(rpc, 'localLists').mockResolvedValue({ files: {} })
-        render(<Settings live={live()} onUseInRule={() => {}} />)
-        screen.getByRole('button', { name: /Дополнительно/ }).click()
+        render(<Settings live={live()} />)
         expect(await screen.findByText('Бекап настроек')).toBeInTheDocument()
     })
 
