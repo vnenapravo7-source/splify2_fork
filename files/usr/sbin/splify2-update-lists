@@ -11,6 +11,11 @@
 # у них нет размера в элементах набора, набор заполняет резолвер по мере запросов.
 set -u
 
+if [ "${1:-}" = --scheduled ]; then
+    . "${SCHEDULE_LIB:-/usr/lib/splify2/list-schedule.sh}" || exit 1
+    schedule_due || exit 0
+fi
+
 # Пути переопределяемы окружением — иначе скрипт невозможно проверить, не трогая
 # рабочую систему: всё, к чему он обращается, задано абсолютными путями. Значения по
 # умолчанию прежние, на роутере ничего не меняется; переменные выставляет только
@@ -162,6 +167,10 @@ used_files() {  # ip|domains
     else
         jsonfilter -i "$SPEC" -e '@.channels[*].match.domains_files[*]' 2>/dev/null
     fi
+    if [ "$1" = domains ]; then cu_dir="$LISTS/custom/domains"; else cu_dir="$LISTS/custom"; fi
+    for cu_src in "$cu_dir"/*.lst.src; do
+        [ -f "$cu_src" ] && grep -qx 'source=url' "$cu_src" && [ -f "${cu_src%.src}" ] && printf '%s\n' "${cu_src%.src}"
+    done
 }
 
 # Ключ карты — путь У ИЗДАТЕЛЯ (`domains/news.lst`, `news.lst`), а не basename. По
@@ -241,6 +250,13 @@ alias_for() {  # СТАРОЕ_ИМЯ -> НОВОЕ_ИМЯ или пусто
 # Содержимое кладётся по СТАРОМУ пути (см. вызов): спека продолжает работать как есть,
 # правки настроек от человека не требуется, а в журнале переименование названо вслух.
 url_for() {
+    case "$1" in custom/*.lst)
+        cu_src="$LISTS/$1.src"
+        grep -qx 'source=url' "$cu_src" 2>/dev/null || return 1
+        cu_url="$(sed -n 's/^url=//p' "$cu_src" | head -1)"
+        case "$cu_url" in https://*|http://*) printf '%s' "$cu_url"; return 0 ;; *) return 1 ;; esac
+        ;;
+    esac
     [ -f "$MANIFEST_MAP" ] || return 1
     url="$(awk -v v="$1" '$1 == v { print $2; exit }' "$MANIFEST_MAP")"
     [ -n "$url" ] && { printf '%s' "$url"; return 0; }
@@ -673,4 +689,5 @@ fi
 # тот час, на который пришлось ночное обновление.
 
 [ "$failed" = 1 ] && exit 1
+if [ "${1:-}" = --scheduled ]; then schedule_done || exit 1; fi
 exit 0

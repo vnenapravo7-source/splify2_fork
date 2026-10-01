@@ -52,3 +52,22 @@
 @supports not (backdrop-filter:blur(1px)) { .sp-root .sp-glass-card,.sp-root .sp-hub-row,.sp-root aside,.sp-root .sp-bottom-bar { background:var(--sp-card) !important; } }
 @media(max-width:767px) { .sp-root .sp-connection-grid { grid-template-columns:1fr !important; } .sp-root .sp-glass-card { border-radius:22px !important; } .sp-root .sp-hub-row { padding:16px !important; } .sp-root .sp-connection-grid .sp-hub-row { min-height:110px !important; } }
 @media(prefers-reduced-transparency:reduce) { .sp-root { --sp-glass:var(--sp-card); --sp-chrome:var(--sp-rail); } }
+
+/* LuCI utilities use !important; expressive layout must use the same priority. */
+.sp-root .sp-topbar { display:flex !important; align-items:center !important; gap:24px !important; flex-wrap:wrap !important; padding:20px 24px !important; border-bottom:1px solid var(--sp-border) !important; background:var(--sp-chrome) !important; backdrop-filter:blur(28px) !important; }
+.sp-root .sp-brand { display:flex !important; align-items:center !important; gap:10px !important; flex-shrink:0 !important; }
+.sp-root .sp-topnav { display:flex !important; flex-wrap:wrap !important; align-items:center !important; gap:6px !important; }
+.sp-root .sp-topnav .sp-nav-item { display:flex !important; align-items:center !important; gap:8px !important; padding:12px 18px !important; white-space:nowrap !important; }
+.sp-root .sp-engine-footer { max-width:380px !important; margin-left:auto !important; }
+.sp-root .sp-inline-outputs { border-top:1px solid var(--sp-border) !important; padding-top:24px !important; margin-top:24px !important; }
+.sp-root .sp-fold { background:var(--sp-glass) !important; backdrop-filter:blur(28px) !important; border:1px solid var(--sp-border) !important; border-radius:24px !important; overflow:hidden !important; }
+.sp-root .sp-fold-heading { display:flex !important; align-items:center !important; gap:14px !important; padding:20px !important; width:100% !important; color:var(--sp-foreground) !important; background:transparent !important; }
+.sp-root .sp-fold-heading:hover { background:var(--sp-accent) !important; }
+.sp-root .sp-fold-icon { padding:12px !important; border-radius:18px !important; background:var(--sp-secondary) !important; color:var(--sp-primary) !important; }
+.sp-root .sp-fold-content { padding:0 20px 20px !important; }
+.sp-root .sp-backup-inline { padding:20px !important; border:1px solid var(--sp-border) !important; border-radius:24px !important; background:var(--sp-glass) !important; backdrop-filter:blur(28px) !important; }
+@media(max-width:767px) { .sp-root .sp-topbar { padding:16px 12px !important; gap:16px !important; } .sp-root .sp-topnav { width:100% !important; } .sp-root .sp-topnav .sp-nav-item { padding:10px 12px !important; } .sp-root .sp-fold-heading { padding:16px !important; } .sp-root .sp-fold-content { padding:0 12px 16px !important; } .sp-root .sp-backup-inline { padding:12px !important; } }
+
+.sp-root .sp-list-schedule { display:flex!important; align-items:center!important; gap:14px!important; flex-wrap:wrap!important; padding:18px!important; background:var(--sp-glass)!important; border:1px solid var(--sp-border)!important; border-radius:22px!important; backdrop-filter:blur(28px)!important; }
+
+.sp-root .sp-custom-lists { background:var(--sp-glass)!important; backdrop-filter:blur(28px)!important; border-radius:24px!important; padding:20px!important; }

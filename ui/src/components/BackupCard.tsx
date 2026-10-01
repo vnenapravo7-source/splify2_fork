@@ -172,7 +172,7 @@ export default function BackupCard({
         <Card>
             {dialog}
             <CardHeader className="pb-2">
-                <CardTitle className="text-base">Бекап настроек</CardTitle>
+                <CardTitle className="text-base">Бэкап настроек</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
                 <p className="text-sm text-muted-foreground">
@@ -194,8 +194,7 @@ export default function BackupCard({
                         )}
                         Скачать архив
                     </Button>
-                    <label className="inline-flex items-center gap-2 text-xs text-muted-foreground">
-                        <Upload className="h-4 w-4" aria-hidden="true" />
+                    <Button variant="secondary" onClick={() => fileRef.current?.click()} disabled={busy !== ''}><Upload className="h-4 w-4" aria-hidden="true" />Загрузить архив</Button>
                         <input
                             ref={fileRef}
                             type="file"
@@ -206,9 +205,9 @@ export default function BackupCard({
                                 const f = e.currentTarget.files?.[0]
                                 if (f) void importAll(f)
                             }}
-                            className="text-xs file:mr-2 file:rounded-md file:border file:border-input file:bg-transparent file:px-3 file:py-1.5 file:text-sm"
+                            className="hidden"
                         />
-                    </label>
+
                 </div>
 
                 <p className="text-xs text-muted-foreground">

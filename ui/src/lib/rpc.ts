@@ -231,6 +231,8 @@ export const rpc = {
     /** Which list files are already on the router, with their local line count. The
      *  UI cannot tell a downloaded list from a merely offered one without this — and
      *  without that difference, "Download" sits over a list that is already there. */
+    listsSchedule: declare<{ ok: boolean; hours: number; error?: string }>('lists_schedule'),
+    listsScheduleSet: declare<{ ok: boolean; hours: number; error?: string }>('lists_schedule_set', ['hours']),
     localLists: declare<{ files: Record<string, { count: number; mtime: number }> }>('local_lists'),
 
     /** Обновить разом всё, что используют правила. Тот же прогон, что идёт по

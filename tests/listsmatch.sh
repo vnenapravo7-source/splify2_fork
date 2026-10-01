@@ -1333,5 +1333,19 @@ check "TERM: прогон завершился, а не продолжил ра�
 check "TERM: замок снят" "no" "$([ -d "$T/var/update.lock" ] && echo yes || echo no)"
 pkill -f "$T/bin/curl" 2>/dev/null
 
+# URL lists refresh even before they are assigned to a rule; text lists stay intact.
+mkdir -p "$T/lists/custom/domains" "$T/serve"
+printf 'old.example\n' > "$T/lists/custom/domains/personal.lst"
+printf 'source=url\nurl=https://example.test/personal-domains.txt\n' > "$T/lists/custom/domains/personal.lst.src"
+printf 'a.example\nb.example\nc.example\n' > "$T/serve/personal-domains.txt"
+printf 'manual.example\n' > "$T/lists/custom/domains/manual.lst"
+printf 'source=text\n' > "$T/lists/custom/domains/manual.lst.src"
+run_update
+check "свой URL-список обновляется без назначения правилу" "3" "$(grep -c . "$T/lists/custom/domains/personal.lst")"
+check "ручной список не перезаписывается" "manual.example" "$(cat "$T/lists/custom/domains/manual.lst")"
+printf '<html>blocked</html>\n' > "$T/serve/personal-domains.txt"
+run_update
+check "ошибка загрузки своего списка сохраняет прежние записи" "3" "$(grep -c . "$T/lists/custom/domains/personal.lst")"
+
 printf '\n%s\n' "$([ "$fails" -eq 0 ] && echo 'все проверки прошли' || echo 'ЕСТЬ ПРОВАЛЫ')"
 [ "$fails" -eq 0 ]

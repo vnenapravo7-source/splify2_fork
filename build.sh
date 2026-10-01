@@ -309,13 +309,9 @@ cat > build/scripts/post-install <<'EOF'
 if [ -x /etc/uci-defaults/99-splify2 ]; then
     ( . /etc/uci-defaults/99-splify2 ) >/dev/null 2>&1 && rm -f /etc/uci-defaults/99-splify2
 fi
-if ! grep -q splify2-update-lists /etc/crontabs/root 2>/dev/null; then
-    mkdir -p /etc/crontabs
-    printf '%s 5 * * * /usr/sbin/splify2-update-lists\n' "$(awk "BEGIN{srand();print int(rand()*60)}")" \
-        >> /etc/crontabs/root
-    /etc/init.d/cron enable 2>/dev/null
-    /etc/init.d/cron restart 2>/dev/null
-fi
+. /usr/lib/splify2/list-schedule.sh
+schedule_install
+
 # Отправка телеметрии — СВОИМ заданием и РАЗ В ЧАС. Раньше она ехала хвостом ночного
 # обновления списков ровно затем, чтобы задание было одно; час хвостом суточного задания не
 # сделать, поэтому довод отменён решением владельца, а вместе с ним отменена и экономия на

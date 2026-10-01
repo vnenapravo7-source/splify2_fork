@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/preact'
 import { describe, expect, it, vi } from 'vitest'
-import Rail from '@/components/Rail'
+import Rail from '@/components/EngineToggle'
 import { live } from './fixtures'
 import { rpc } from '@/lib/rpc'
 
@@ -18,7 +18,7 @@ const noop = () => {}
 /** Тумблер живёт в подвале рельса: он про роутер целиком, а не про раздел, и человек ищет
  *  его тогда же, когда смотрит «работает ли». Прежде он стоял в закреплённой колонке. */
 const rail = (l: Parameters<typeof Rail>[0]['live']) => (
-    <Rail live={l} section="overview" onSection={noop} counts={{}} />
+    <Rail live={l} variant="rail" onSection={noop} />
 )
 const RUNNING = { present: true, vless: true, version: '0.9.6', enabled: true, running: true }
 const STOPPED = { present: true, vless: true, version: '0.9.6', enabled: false, running: false }

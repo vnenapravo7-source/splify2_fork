@@ -70,3 +70,5 @@ export const Upload = icon('Upload')
 export const Waves = icon('Waves')
 export const X = icon('X')
 export const XCircle = icon('XCircle')
+
+export const Clock3 = icon('Clock3')

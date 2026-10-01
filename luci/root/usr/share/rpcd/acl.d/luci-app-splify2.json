@@ -50,7 +50,8 @@
           "zapret_autoselect",
           "telemetry_state",
           "telemetry_preview",
-          "support_report"
+          "support_report",
+          "lists_schedule"
         ]
       }
     },
@@ -101,7 +102,8 @@
           "zapret_autoselect_undo",
           "telemetry_set",
           "sub_auto",
-          "sub_refresh"
+          "sub_refresh",
+          "lists_schedule_set"
         ]
       }
     }

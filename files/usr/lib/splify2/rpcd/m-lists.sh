@@ -58,6 +58,23 @@ custom_meta_get() {  # ИМЯ ВИД
 }
 
 case "$2" in
+    lists_schedule|lists_schedule_set)
+        . "${SCHEDULE_LIB:-/usr/lib/splify2/list-schedule.sh}" || fail "модуль расписания не найден"
+        if [ "$2" = lists_schedule_set ]; then
+            read -r input
+            json_load "$input" 2>/dev/null || fail "неразбираемый запрос"
+            json_get_var hours hours
+            case "$hours" in 12|24|48|72|168) ;; *) fail "допустимые интервалы: 12, 24, 48, 72, 168 часов" ;; esac
+            old_hours="$(schedule_hours)"
+            uci -q set splify2.main.lists_interval_hours="$hours" && uci -q commit splify2 || fail "не удалось сохранить расписание"
+            if ! schedule_install; then
+                uci -q set splify2.main.lists_interval_hours="$old_hours"; uci -q commit splify2
+                fail "не удалось установить задание обновления"
+            fi
+        fi
+        json_init; json_add_boolean ok 1; json_add_int hours "$(schedule_hours)"; json_dump
+        ;;
+
 
     lists)
         # Манифест отдаётся как есть — превращать его в форму интерфейса здесь значило

@@ -37,7 +37,7 @@ it('all five presets call the real explain RPC with their domain', async () => {
 })
 it('backup is at the bottom of settings and the whole named row opens general settings', async () => {
     const { container } = render(<Settings live={live()} />)
-    expect(container.querySelector('.sp-settings')?.lastElementChild?.textContent).toContain('Бекап настроек')
+    expect(container.querySelector('.sp-settings')?.lastElementChild?.textContent).toContain('Бэкап настроек')
     expect(screen.queryByRole('button', { name: /Дополнительно/ })).toBeNull()
     fireEvent.click(screen.getByText('Общее'))
     expect(await screen.findByRole('heading', { name: 'Общее' })).toBeInTheDocument()
@@ -46,7 +46,7 @@ it('DoH lives in connections and keeps its original controls', async () => {
     vi.spyOn(rpc, 'dohState').mockResolvedValue({ installed: false } as never)
     render(<Vpn live={live()} />)
     fireEvent.click(screen.getByRole('button', { name: /DoH/ }))
-    expect(await screen.findByRole('heading', { name: 'DoH' })).toBeInTheDocument()
+    expect(await screen.findByText(/Пакет https-dns-proxy не установлен/)).toBeInTheDocument()
 })
 it('catalog and custom lists are reachable from rules', async () => {
     render(<Rules live={live()} />)

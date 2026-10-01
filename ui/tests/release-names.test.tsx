@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/preact'
 import { describe, expect, it } from 'vitest'
 import EngineCard from '@/components/EngineCard'
 import SelfUpdateCard from '@/components/SelfUpdateCard'
-import Rail from '@/components/Rail'
+import Rail from '@/components/EngineToggle'
 import { cmpVersion, engineAction, releaseName } from '@/lib/engine'
 import { live } from './fixtures'
 
@@ -121,9 +121,8 @@ describe('выпадающие списки: показывается имя, с
                     build: { present: true, vless: true, version: '1.2.0', arch: 'aarch64_cortex-a53' },
                     releases: RELEASES,
                 })}
-                section="overview"
+                variant="rail"
                 onSection={noop}
-                counts={{}}
             />,
         )
         expect(screen.getByRole('button', { name: 'Обновить до 26.9.1 Andromeda' })).toBeInTheDocument()

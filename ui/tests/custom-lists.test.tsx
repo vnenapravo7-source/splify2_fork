@@ -65,9 +65,9 @@ describe('форма своих списков', () => {
         expect(screen.getByLabelText('Ссылка на список')).toBeInTheDocument()
     })
 
-    it('говорит, что расписания у своего списка нет (R-037)', () => {
+    it('говорит об автообновлении списков по ссылкам (R-037)', () => {
         render(<CustomLists local={{}} onChanged={() => {}} />)
-        expect(screen.getByText(/расписание есть только у списков издателя/i)).toBeInTheDocument()
+        expect(screen.getByText(/Списки по ссылкам обновляются автоматически/i)).toBeInTheDocument()
     })
 
     it('негодное имя названо до отправки, и отправить нечем (R-037)', () => {

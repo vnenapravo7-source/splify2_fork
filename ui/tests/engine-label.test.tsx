@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/preact'
 import { describe, expect, it } from 'vitest'
-import Rail from '@/components/Rail'
+import Rail from '@/components/EngineToggle'
 import EngineCard from '@/components/EngineCard'
 import { live } from './fixtures'
 
@@ -20,7 +20,7 @@ const noop = () => {}
 /** Подвал рельса — то место, где подпись действия над движком видна с любого раздела.
  *  Прежде она стояла в закреплённой колонке состояния (StatusRail), которой больше нет. */
 const rail = (l: Parameters<typeof Rail>[0]['live']) => (
-    <Rail live={l} section="overview" onSection={noop} counts={{}} />
+    <Rail live={l} variant="rail" onSection={noop} />
 )
 
 describe('подпись действия над движком', () => {

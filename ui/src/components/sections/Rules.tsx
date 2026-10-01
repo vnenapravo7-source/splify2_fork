@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import RulesTab from '@/components/tabs/RulesTab'
 import CatalogTab from '@/components/tabs/CatalogTab'
+import ListSchedule from '@/components/ListSchedule'
 import CustomLists from '@/components/CustomLists'
 import { rpc } from '@/lib/rpc'
 import type { ServiceEntry } from '@/lib/model'
@@ -22,7 +23,7 @@ export default function Rules(props: {
             {[['rules', 'Правила'], ['catalog', 'Каталог'], ['custom', 'Свои списки']].map(([id, text]) => <button key={id} type="button" aria-pressed={tab === id} onClick={() => setTab(id)}>{text}</button>)}
         </div>
         {tab === 'rules' && <RulesTab {...props} wanted={wanted || props.wanted} onWantedUsed={() => { setWanted(null); props.onWantedUsed?.() }} />}
-        {tab === 'catalog' && <CatalogTab onUseInRule={service => { setWanted(service); setTab('rules') }} />}
-        {tab === 'custom' && <CustomLists local={local} onChanged={() => { void reload().catch(() => setLocal({})) }} />}
+        {tab === 'catalog' && <><ListSchedule/><CatalogTab onUseInRule={service => { setWanted(service); setTab('rules') }} /></>}
+        {tab === 'custom' && <><ListSchedule/><CustomLists local={local} onChanged={() => { void reload().catch(() => setLocal({})) }} /></>}
     </div>
 }

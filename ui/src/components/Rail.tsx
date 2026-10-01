@@ -1,29 +1,9 @@
 import { House, Route, Settings, ShieldCheck, Waves } from 'lucide-react'
-import EngineToggle from '@/components/EngineToggle'
 import { type Live } from '@/lib/live'
 import { assetUrl } from '@/lib/assets'
 import { type SectionId } from '@/lib/sections'
 
-/** Рельс разделов: шесть пунктов, у каждого своя роль.
- *
- *  Заменил строку вкладок. Вкладок было четыре, и в одну из них («Логи steer») въехало всё,
- *  что не влезло в остальные: диагностика, счётчики, движок, самообновление и архив настроек.
- *  Название вкладки перестало описывать её содержимое, а найти в ней что-либо можно было
- *  только прокруткой. Рельс это разделяет: шесть разделов, и каждый отвечает на один вопрос.
- *
- *  ДВЕ РАСКЛАДКИ, и это решение дизайна 26.9, а не адаптация «на всякий случай». На широком
- *  экране рельс стоит слева колонкой и держит в подвале движок и «Остановить всё». На узком он
- *  уходит в НИЖНЮЮ ПАНЕЛЬ: колонка, сжатая до ширины телефона, превращалась в полосу, из
- *  которой видно три пункта из шести, а остальные надо было проматывать, не зная, что там
- *  есть что проматывать. Нижняя панель показывает все шесть сразу и стоит там, где до неё
- *  дотягивается большой палец.
- *
- *  Счётчики у пунктов — не украшение. «Правила 4» отвечает на вопрос, который иначе требует
- *  зайти в раздел, а цифра у диагностики — единственное место, где о находке видно, не
- *  открывая её. Написаны они как счётчики: подпись и число, без склонений после числительного.
- *  В нижней панели их нет: там на пункт приходится 60 пикселей, и число в них читается как
- *  часть подписи. */
-
+/** Верхняя навигация: одна и та же на телефоне и широком экране. */
 const ITEMS: { id: SectionId; label: string; icon: typeof House }[] = [
     { id: 'home', label: 'Обзор', icon: House },
     { id: 'rules', label: 'Правила', icon: Route },
@@ -50,116 +30,8 @@ function releaseSuffix(): string {
 }
 
 export default function Rail({ live, section, onSection, counts }: RailProps) {
-    return (
-        <>
-            {/* ── широкий экран: колонка слева ─────────────────────────────────────── */}
-            {/* self-stretch: у подложки есть нижняя граница высоты (см. .sp-root), и рельс
-                обязан тянуться вместе с ней — иначе под ним видна ступенька другого фона. */}
-            <aside className="hidden shrink-0 self-stretch flex-col gap-4 border-r border-border bg-rail p-4 lg:flex lg:w-[176px]">
-                <div className="flex items-center gap-2.5 px-1.5">
-                    {/* Логотип — тот же знак, что на иконке (favicon.svg из сборки), а не квадрат
-                        с буквой, который стоял здесь заглушкой (владелец: «у нас же логотип
-                        лежит»). Файлом рядом со стилем, а не в бандле: 10 КБ ради картинки,
-                        которую браузер и так запомнит. */}
-                    <img
-                        src={assetUrl('favicon.svg')}
-                        alt=""
-                        aria-hidden="true"
-                        className="h-8 w-8 shrink-0 select-none"
-                        draggable={false}
-                    />
-                    <div className="min-w-0 leading-tight">
-                        <div className="text-[15px] font-semibold">splify2</div>
-                        {/* Версия — та, что стоит, а не та, что задумана: строку читают, чтобы
-                            сверить с релизом. Пока её не спросили, места она не занимает. */}
-                        <div className="truncate text-[11px] text-muted-foreground">
-                            {[live.selfUpdate?.current, 'Andromeda', releaseSuffix()].filter(Boolean).join(' ')}
-                        </div>
-                    </div>
-                </div>
-
-                <nav className="flex flex-col gap-0.5" aria-label="Разделы">
-                    {ITEMS.map(({ id, label, icon: Icon }) => {
-                        const on = section === id
-                        const c = counts[id]
-                        return (
-                            <button
-                                key={id}
-                                type="button"
-                                aria-current={on ? 'page' : undefined}
-                                onClick={() => onSection(id)}
-                                className={[
-                                    'sp-nav-item flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm transition-colors duration-200',
-                                    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary',
-                                    on
-                                        ? 'bg-primary/10 font-medium text-primary'
-                                        : 'text-subtle hover:bg-accent hover:text-foreground',
-                                ].join(' ')}
-                            >
-                                <Icon className="h-[18px] w-[18px] shrink-0" aria-hidden="true" />
-                                {label}
-                                {c && (
-                                    <span
-                                        className={`ml-auto text-[11px] ${
-                                            c.alarm ? 'font-semibold text-warning-fg' : 'text-muted-foreground'
-                                        }`}
-                                    >
-                                        {c.text}
-                                    </span>
-                                )}
-                            </button>
-                        )
-                    })}
-                </nav>
-
-                <div className="mt-auto">
-                    <EngineToggle live={live} variant="rail" onSection={onSection} />
-                </div>
-            </aside>
-
-            {/* ── узкий экран: нижняя панель ───────────────────────────────────────── */}
-            {/* Края панели — НЕ края окна, а края нашей подложки (left/right ставит index.css из
-                переменных, которые измеряет main.tsx). Панель во всю ширину окна на телефоне в
-                альбомной ориентации ложилась под меню темы: Argon до 1152 пикселей держит слева
-                колонку меню на 13rem с z-index 100, и первые два пункта («Главная», «Правила»)
-                оказывались под ней — человек видел четыре кнопки из шести. Портрет уже 768, там
-                меню у темы спрятано, и панель была целой; отсюда «не всегда». */}
-            <nav
-                aria-label="Разделы"
-                className="sp-bottom-bar fixed bottom-0 z-40 flex border-t border-border bg-rail lg:hidden"
-            >
-                {ITEMS.map(({ id, label, icon: Icon }) => {
-                    const on = section === id
-                    const c = counts[id]
-                    return (
-                        <button
-                            key={id}
-                            type="button"
-                            aria-current={on ? 'page' : undefined}
-                            onClick={() => onSection(id)}
-                            className={[
-                                'relative flex min-w-0 flex-1 flex-col items-center gap-1 px-0.5 pb-2 pt-2.5',
-                                'text-[11px] leading-tight transition-colors duration-200',
-                                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary',
-                                on ? 'font-medium text-primary' : 'text-subtle',
-                            ].join(' ')}
-                        >
-                            <Icon className="h-[19px] w-[19px] shrink-0" aria-hidden="true" />
-                            {/* Подпись не сокращается до иконки: значки без слов — это
-                                загадки, и «VPN» от «Настроек» по картинке не отличить. */}
-                            <span className="w-full truncate text-center">{label}</span>
-                            {/* Находка помечается точкой, а не числом: числу здесь негде встать,
-                                а вопрос, на который отвечает пункт, — «есть ли о чём знать». */}
-                            {c?.alarm && (
-                                <span
-                                    className="absolute right-[18%] top-1.5 h-1.5 w-1.5 rounded-full bg-warning"
-                                    aria-hidden="true"
-                                />
-                            )}
-                        </button>
-                    )
-                })}
-            </nav>
-        </>
-    )
+    return <header className="sp-topbar">
+        <div className="sp-brand"><img src={assetUrl('favicon.svg')} alt="" aria-hidden="true" className="h-8 w-8" /><div><strong>splify2</strong><div className="text-xs text-muted-foreground">{[live.selfUpdate?.current, 'Glass Expressive', releaseSuffix()].filter(Boolean).join(' ')}</div></div></div>
+        <nav className="sp-topnav" aria-label="Разделы">{ITEMS.map(({id,label,icon:Icon}) => <button key={id} type="button" aria-current={section===id?'page':undefined} onClick={()=>onSection(id)} className={['sp-nav-item',section===id?'bg-primary/10 text-primary font-medium':'text-subtle hover:bg-accent'].join(' ')}><Icon className="h-[18px] w-[18px] shrink-0" aria-hidden="true"/><span>{label}</span>{counts[id]&&<span className="text-xs text-muted-foreground">{counts[id]?.text}</span>}</button>)}</nav>
+    </header>
 }

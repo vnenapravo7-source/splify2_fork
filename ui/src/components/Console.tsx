@@ -98,12 +98,12 @@ export default function Console() {
                 кончается там, где кончился его список, и под ним видна ступенька другого
                 фона. `min-h-full` работает от родителя с известной высотой — им и является
                 .sp-root. */}
-            <div className="flex min-h-full flex-col lg:flex-row">
+            <div className="flex min-h-full flex-col">
                 <Rail live={live} section={section} onSection={(s) => go(s)} counts={counts} />
 
                 {/* Отступ снизу на узком экране — под нижнюю панель разделов: без него последняя
                     карточка уезжает под неё, и человек не видит, что страница кончилась. */}
-                <main className="min-w-0 flex-1 px-3 pb-24 pt-3 lg:p-6">
+                <main className="min-w-0 flex-1 px-3 pb-6 pt-3 lg:p-6">
                     {/* «Сохранено» — вспышка на полторы секунды после каждой УДАВШЕЙСЯ записи, а
                         не после правки: взамен кнопки эта галочка — единственное, по чему человек
                         судит, уехало ли что-нибудь на роутер. */}
@@ -169,8 +169,8 @@ export default function Console() {
                         кнопке на всю ширину там не место, а прятать её нельзя (R-017). Под
                         содержимым раздела, на любом из них — то же свойство «доступна всегда»,
                         что у подвала рельса на широком экране. */}
-                    <div className="mt-6 lg:hidden">
-                        <EngineToggle live={live} variant="block" />
+                    <div className="sp-engine-footer mt-6">
+                        <EngineToggle live={live} variant="rail" onSection={(s) => go(s)} />
                     </div>
 
                     <div className="mt-6 border-t border-border pt-3 text-right text-xs text-muted-foreground">

@@ -215,7 +215,7 @@ export default function CustomLists({
     }
 
     return (
-        <section className="rounded-md border border-border bg-card p-4">
+        <section className="sp-custom-lists rounded-md border border-border bg-card p-4">
             <h3 className="sp-sub">Свои списки</h3>
             <p className="mt-1 text-xs text-muted-foreground">
                 Домены и подсети, которых нет у издателя. После добавления список появится в
@@ -364,8 +364,8 @@ export default function CustomLists({
                 {/* Сказать сразу: обновления по расписанию у своего списка нет. Ждать его
                     молча — то же самое, что показывать устаревшие данные как свежие. */}
                 <p className="text-xs text-muted-foreground">
-                    Скачивается один раз. Обновлять придётся этой же кнопкой: расписание есть только
-                    у списков издателя.
+                    Списки по ссылкам обновляются автоматически по расписанию выше. Файлы и записи
+                    вручную обновляются только при сохранении.
                 </p>
             </div>
         </section>

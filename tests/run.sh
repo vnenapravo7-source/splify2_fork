@@ -25,6 +25,7 @@ run() {  # ИМЯ КОМАНДА...
     fi
 }
 
+run list-schedule sh "$ROOT/tests/schedulematch.sh"
 run listsmatch sh "$ROOT/tests/listsmatch.sh"
 run rpcdmatch  sh "$ROOT/tests/rpcdmatch.sh"
 run pkgmatch   sh "$ROOT/tests/pkgmatch.sh"

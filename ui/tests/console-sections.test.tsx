@@ -108,11 +108,11 @@ describe('рельс разделов вместо вкладок (Andromeda 26.
         nav(/Настройки/).click()
         ;(await screen.findByRole('button', { name: /Диагностика/ })).click()
         await waitFor(() => expect(screen.queryByText('Логи steer')).toBeInTheDocument())
-        expect(screen.queryByText('Бекап настроек')).toBeNull()
+        expect(screen.queryByText('Бэкап настроек')).toBeNull()
 
         // Кнопка «назад» внутри раздела — последняя: до неё в дереве стоят два пункта рельса.
         screen.getAllByRole('button', { name: /Настройки/ }).at(-1)!.click()
-        expect(await screen.findByText('Бекап настроек')).toBeInTheDocument()
+        expect(await screen.findByText('Бэкап настроек')).toBeInTheDocument()
     })
 
     it('у каждого раздела заголовок ровно как пункт рельса', async () => {
