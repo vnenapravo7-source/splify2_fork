@@ -176,3 +176,15 @@ body:has(.sp-confirm-overlay) .sp-apply-portal {visibility:hidden!important;}
 .sp-root .sp-overview-rule > .sp-rule-check {grid-column:1!important;grid-row:1!important;align-self:start!important;}
 .sp-root .sp-overview-rule > .sp-rule-number {grid-column:2!important;grid-row:1!important;align-self:start!important;}
 .sp-root .sp-overview-rule > .sp-rule-details {grid-column:3!important;grid-row:1!important;}
+/* Compact routing board, height follows wrapped content. */
+.sp-root .sp-routing-board {padding:18px!important;gap:20px!important;align-items:start!important;}
+.sp-root .sp-routing-outputs {padding-left:20px!important;}
+.sp-root .sp-routing-board h2 {min-height:24px!important;}
+.sp-root .sp-overview-rule {padding:12px 0!important;}
+.sp-root .sp-rule-details {display:grid!important;grid-template-columns:minmax(90px,.8fr) minmax(0,1fr)!important;gap:5px 12px!important;align-items:center!important;}
+.sp-root .sp-rule-name {line-height:32px!important;}
+.sp-root .sp-rule-counters,.sp-root .sp-rule-note {grid-column:1 / -1!important;}
+.sp-root .sp-routing-outputs .sp-glass-card > div {padding:10px 0!important;}
+.sp-root .sp-routing-board > section > div {gap:8px!important;}
+@media(max-width:1000px){.sp-root .sp-rule-details {grid-template-columns:minmax(0,1fr)!important;}.sp-root .sp-rule-counters,.sp-root .sp-rule-note {grid-column:1!important;}}
+@media(max-width:767px){.sp-root .sp-routing-board {padding:14px!important;gap:14px!important;}.sp-root .sp-routing-outputs {padding-left:0!important;padding-top:14px!important;}.sp-root .sp-overview-rule {padding:10px 0!important;}}
