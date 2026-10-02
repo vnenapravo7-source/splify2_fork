@@ -148,3 +148,8 @@ body:has(.sp-confirm-overlay) .sp-apply-portal {visibility:hidden!important;}
 .sp-root .sp-catalog-table tbody tr:hover td {background:var(--sp-accent)!important;}
 .sp-root select {appearance:none!important;-webkit-appearance:none!important;padding-right:40px!important;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238da3b2' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")!important;background-repeat:no-repeat!important;background-position:right 14px center!important;background-size:16px 16px!important;}
 .sp-root input[type=radio]::before,.sp-root input[type=radio]::after,.sp-root input[type=radio]:checked::after {content:none!important;display:none!important;}
+@media(max-width:767px){
+ .sp-root .sp-list-schedule {display:grid!important;grid-template-columns:20px minmax(0,1fr)!important;align-items:start!important;gap:12px!important;padding:16px!important;}
+ .sp-root .sp-list-schedule > select {grid-column:1 / -1!important;width:100%!important;max-width:100%!important;}
+ .sp-root .sp-list-schedule > div {width:100%!important;}
+}
