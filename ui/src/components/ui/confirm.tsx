@@ -69,5 +69,5 @@ export function useConfirm(): [(req: ConfirmRequest) => Promise<boolean>, React.
     </div>
   ) : null
 
-  return [ask, dialog ? createPortal(dialog, document.querySelector('.sp-root') || document.body) : null]
+  return [ask, dialog ? createPortal(<div className="splify-react-root sp-modal-portal"><div className="sp-root sp-modal-theme">{dialog}</div></div>, document.body) : null]
 }
