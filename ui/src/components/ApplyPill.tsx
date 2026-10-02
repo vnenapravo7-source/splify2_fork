@@ -1,3 +1,4 @@
+import { createPortal } from 'react-dom'
 import { Check, Loader2 } from 'lucide-react'
 import { usePending } from '@/lib/pending'
 
@@ -13,8 +14,8 @@ export default function ApplyPill() {
     /* На телефоне снизу рельс: пилюля встаёт над ним, а не на него. По горизонтали — по середине
        НАШЕЙ подложки, а не окна (sp-float-center): рядом с колонкой меню темы середина окна
        смещена относительно содержимого, и пилюля уезжала к меню. */
-    return (
-        <div className="sp-float-center fixed bottom-20 z-50 -translate-x-1/2 lg:bottom-6">
+    return createPortal(
+        <div className="splify-react-root sp-apply-portal"><div className="sp-root sp-apply-theme">
             <button
                 type="button"
                 onClick={apply}
@@ -44,6 +45,6 @@ export default function ApplyPill() {
                     </>
                 )}
             </button>
-        </div>
+        </div></div>, document.body
     )
 }

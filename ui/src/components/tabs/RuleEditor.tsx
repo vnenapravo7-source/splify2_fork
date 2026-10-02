@@ -267,7 +267,7 @@ export default function RuleEditor({
                         </div>
                     )}
 
-                    <div className="mt-2 flex items-center gap-2 rounded-md border border-border px-2">
+                    <div className="sp-search mt-2 flex items-center gap-2 rounded-md border border-border px-2">
                         <Search className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" />
                         <input
                             value={q}

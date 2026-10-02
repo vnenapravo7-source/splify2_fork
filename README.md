@@ -33,7 +33,7 @@ npm run build
 
 Нейтральные стеклянные поверхности, компактный движок в верхней навигации, сводки подписок и DoH, компактные строки VPN с прямым редактированием и разделы настроек. Бэкап расположен последним раскрываемым пунктом.
 
-Установщик и самообновление интерфейса направлены на vnenapravo7-source/splify2_fork. Готовые пакеты доступны в [релизе 26.9.7 Glass Expressive](https://github.com/vnenapravo7-source/splify2_fork/releases/tag/v26.9.7). Движок, каталог и сторонние модули продолжают использовать исходные источники. Перед установкой сохраните архив настроек.
+Установщик и самообновление интерфейса направлены на vnenapravo7-source/splify2_fork. Готовые пакеты доступны в [релизе 26.9.8 Glass Expressive](https://github.com/vnenapravo7-source/splify2_fork/releases/tag/v26.9.8). Движок, каталог и сторонние модули продолжают использовать исходные источники. Перед установкой сохраните архив настроек.
 
 Исходная документация: [docs/UPSTREAM_README.md](docs/UPSTREAM_README.md). История разработки оригинала сохранена.
 
@@ -42,7 +42,7 @@ npm run build
 Выполните по SSH на роутере:
 
 ```sh
-wget -O /tmp/splify2-install.sh https://raw.githubusercontent.com/vnenapravo7-source/splify2_fork/v26.9.7/install.sh && sh /tmp/splify2-install.sh
+wget -O /tmp/splify2-install.sh https://raw.githubusercontent.com/vnenapravo7-source/splify2_fork/v26.9.8/install.sh && sh /tmp/splify2-install.sh
 ```
 
 Установщик определяет apk/opkg и архитектуру сам. Для ручной установки скачайте файл `.apk` для apk или `.ipk` для opkg из релиза.

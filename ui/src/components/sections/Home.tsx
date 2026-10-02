@@ -516,60 +516,32 @@ function RuleRow({
     const shared = (set?.channels?.length ?? 0) > 1
 
     return (
-        <li className={`py-2.5 ${row.enabled ? '' : 'opacity-60'}`}>
-            {/* Строка читается как предложение: правило → куда оно ведёт СЕЙЧАС. Ниже, мельче,
-                то, что спрашивают вторым: сколько через него прошло и что стоит в запасе. */}
-            <div className="sp-rule-line flex flex-wrap items-center gap-x-2 gap-y-0.5">
-                <input type="checkbox" aria-label={`Включить правило ${row.name}`} checked={row.enabled} disabled={!spec} onChange={(e) => {
-                    if (!spec) return
-                    pending.edit({ ...spec, channels: spec.channels.map(c => c.name === row.name ? { ...c, enabled: e.currentTarget.checked } : c) })
-                }} className="sp-rule-check" />
-                <span className="w-4 shrink-0 text-[11px] tabular-nums text-muted-foreground">{n}</span>
-                <span className="min-w-0 max-w-full truncate text-[13px] font-medium">{row.name}</span>
-                <button type="button" aria-label={`Редактировать правило ${row.name}`} onClick={() => onSection('rules', row.name)} className="sp-rule-edit text-primary"><Pencil className="h-4 w-4" aria-hidden="true" /></button>
-                {!row.enabled && (
-                    <span className="sp-rule-notice text-[11px] text-muted-foreground">выключено</span>
-                )}
-                {/* Пока применяется — набор и должен отсутствовать: таблица пересобирается. */}
-                {row.enabled && set && !set.live && !phase && (
-                    <span className="sp-rule-notice text-[11px] text-destructive">нет в ядре</span>
-                )}
-                <ArrowRight className="sp-rule-arrow h-3 w-3 shrink-0 text-muted-foreground" aria-hidden="true" />
-                <button
-                    type="button"
-                    onClick={() => onSection('vpn')}
-                    className="sp-rule-target flex min-w-0 items-center gap-1.5 text-left"
-                >
-                    <Flag cc={facts?.geo?.cc} />
-                    <span className="min-w-0 truncate text-[13px] font-medium">{row.out}</span>
-                    <span className="min-w-0 truncate text-[11px] text-muted-foreground">
-                        {st?.kind === 'direct'
-                            ? 'напрямую'
-                            : [via, facts?.ping && facts.ping.ms >= 0 ? `${facts.ping.ms} мс` : null]
-                                  .filter(Boolean)
-                                  .join(' · ') || 'не поднят'}
-                    </span>
-                </button>
+        <li className={`sp-overview-rule ${row.enabled ? '' : 'opacity-60'}`}>
+            <div className="sp-rule-half">
+                <div className="sp-rule-identity">
+                    <input type="checkbox" aria-label={`Включить правило ${row.name}`} checked={row.enabled} disabled={!spec} onChange={e=>{
+                        if (!spec) return
+                        pending.edit({...spec,channels:spec.channels.map(c=>c.name===row.name?{...c,enabled:e.currentTarget.checked}:c)})
+                    }} className="sp-rule-check"/>
+                    <span className="text-[11px] tabular-nums text-muted-foreground">{n}</span>
+                    <strong className="min-w-0 truncate text-[13px]">{row.name}</strong>
+                    {!row.enabled && <span className="text-[11px] text-muted-foreground">выключено</span>}
+                    {row.enabled&&set&&!set.live&&!phase&&<span className="text-[11px] text-destructive">нет в ядре</span>}
+                </div>
+                <div className="sp-rule-traffic text-[11px] text-muted-foreground">
+                    <span>↓ {down??'—'}</span><span>↑ {up??'—'}</span>
+                    {shared&&<span title={`общий счётчик: ${set!.channels!.join(', ')}`}>счётчик общий</span>}
+                </div>
             </div>
-            <div className="sp-rule-meta mt-0.5 flex flex-wrap gap-x-3 pl-6 text-[11px] text-muted-foreground">
-                {/* Счётчик принадлежит НАБОРУ. Там, где движок свёл несколько правил в один
-                    набор, это сказано словом, а не поделено поровну выдумкой. */}
-                <span>↓ {down ?? '—'}</span>
-                <span>↑ {up ?? '—'}</span>
-                {shared && (
-                    <span title={`общий счётчик: ${set!.channels!.join(', ')}`}>
-                        счётчик общий
-                    </span>
-                )}
-                {/* Запас — не украшение: пока он есть, падение туннеля не останавливает
-                    трафик, а когда его нет, решает «если всё упало». */}
-                <span className="text-subtle">
-                    {spare.length
-                        ? `запас: ${spare.join(', ')}`
-                        : st && st.kind !== 'direct'
-                          ? `если всё упало: ${ON_FAIL_TEXT[st.on_fail || 'drop']}`
-                          : ''}
-                </span>
+            <div className="sp-rule-half sp-rule-outbound">
+                <div className="sp-rule-output-line">
+                    <button type="button" onClick={()=>onSection('vpn')} className="sp-rule-output-link">
+                        <Flag cc={facts?.geo?.cc}/><strong className="text-[13px]">{row.out}</strong>
+                        <span className="text-[11px] text-muted-foreground">{st?.kind==='direct'?'напрямую':[via,facts?.ping&&facts.ping.ms>=0?`${facts.ping.ms} мс`:null].filter(Boolean).join(' · ')||'не поднят'}</span>
+                    </button>
+                    <button type="button" aria-label={`Редактировать правило ${row.name}`} onClick={()=>onSection('rules',row.name)} className="sp-rule-edit text-primary"><Pencil className="h-4 w-4" aria-hidden="true"/></button>
+                </div>
+                <div className="sp-rule-fallback text-[11px] text-muted-foreground">{spare.length?`запас: ${spare.join(', ')}`:st&&st.kind!=='direct'?`если всё упало: ${ON_FAIL_TEXT[st.on_fail||'drop']}`:''}</div>
             </div>
         </li>
     )

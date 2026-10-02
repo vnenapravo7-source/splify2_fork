@@ -488,7 +488,7 @@ export default function RulesTab({
             </div>
 
             {spec.channels.length > 0 && (
-                <div className="flex items-center gap-2 rounded-xl border border-border bg-card px-3 py-1.5 shadow-card">
+                <div className="sp-search flex items-center gap-2 rounded-xl border border-border bg-card px-3 py-1.5 shadow-card">
                     <Search className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" />
                     <input
                         value={search}

@@ -489,7 +489,7 @@ export default function PoolEditor({
                 </div>
             </div>
 
-            <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(0,26rem)]">
+            <div className="sp-search grid gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(0,26rem)]">
                 {/* ---- слева: что можно взять ------------------------------------------ */}
                 <Card>
                     <CardHeader className="space-y-3">
