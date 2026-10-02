@@ -349,7 +349,7 @@ export default function Zapret() {
      * по высоте списка с пустотой между ними (владелец, со скрина). Первые два ряда — по
      * содержимому левых карточек, остаток отдаётся третьему. */
     return (
-        <div className="grid gap-4 xl:grid-cols-[minmax(0,23rem)_minmax(0,1fr)] xl:grid-rows-[auto_auto_1fr] xl:items-start">
+        <div className="sp-zapret-grid grid gap-4 xl:grid-cols-[minmax(0,23rem)_minmax(0,1fr)] xl:grid-rows-[auto_auto_1fr] xl:items-start">
             {/* ---- состояние ------------------------------------------------------------ */}
             <Card>
                 <CardHeader>

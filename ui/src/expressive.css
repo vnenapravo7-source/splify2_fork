@@ -197,3 +197,5 @@ body:has(.sp-confirm-overlay) .sp-apply-portal {visibility:hidden!important;}
  .sp-root .sp-catalog-table td > .flex {flex-wrap:wrap!important;justify-content:flex-start!important;}
  .sp-root .sp-catalog-toolbar > [role=tablist] {width:100%!important;flex-wrap:wrap!important;}
 }
+.sp-root .sp-zapret-grid > .sp-glass-card {min-width:0!important;}
+@media(max-width:1279px){.sp-root .sp-zapret-grid {grid-template-columns:minmax(0,1fr)!important;}}
