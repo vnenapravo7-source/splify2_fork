@@ -156,3 +156,23 @@ body:has(.sp-confirm-overlay) .sp-apply-portal {visibility:hidden!important;}
 @media(max-width:767px){.sp-root .sp-catalog-toolbar > .sp-search {flex:1 0 100%!important;width:100%!important;}}
 
 .splify-react-root.sp-modal-portal,.sp-root.sp-modal-theme {display:contents!important;}
+
+/* One routing surface: rules on the left, exits on the right. */
+.sp-root .sp-routing-board {display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;gap:24px!important;padding:24px!important;background:var(--sp-glass)!important;border:1px solid var(--sp-border)!important;border-radius:28px!important;}
+.sp-root .sp-routing-board > section {min-width:0!important;}
+.sp-root .sp-routing-outputs {border-left:1px solid var(--sp-border)!important;padding-left:24px!important;}
+.sp-root .sp-routing-board .sp-glass-card {background:transparent!important;box-shadow:none!important;backdrop-filter:none!important;border:0!important;border-radius:0!important;}
+.sp-root .sp-routing-rules .sp-glass-card > div {padding:0!important;}
+.sp-root .sp-routing-board h2 {min-height:28px!important;display:flex!important;align-items:center!important;}
+.sp-root .sp-overview-rule {display:grid!important;grid-template-columns:20px 16px minmax(0,1fr) 36px!important;gap:12px!important;padding:18px 0!important;align-items:start!important;}
+.sp-root .sp-overview-rule > .sp-rule-check,.sp-root .sp-rule-number {margin-top:9px!important;}
+.sp-root .sp-rule-details {min-width:0!important;display:flex!important;flex-direction:column!important;gap:6px!important;}
+.sp-root .sp-rule-name {font-size:14px!important;line-height:36px!important;overflow-wrap:anywhere!important;}
+.sp-root .sp-rule-destination {display:flex!important;align-items:center!important;flex-wrap:wrap!important;gap:6px!important;text-align:left!important;font-size:12px!important;color:var(--sp-fg2)!important;}
+.sp-root .sp-rule-counters {display:flex!important;flex-wrap:wrap!important;gap:12px!important;font-size:12px!important;color:var(--sp-fg2)!important;}
+.sp-root .sp-rule-note {margin:0!important;font-size:12px!important;color:var(--sp-fg2)!important;}
+.sp-root .sp-overview-rule > .sp-rule-edit {grid-column:4!important;grid-row:1!important;width:36px!important;height:36px!important;margin:0!important;}
+@media(max-width:767px){.sp-root .sp-routing-board {grid-template-columns:minmax(0,1fr)!important;padding:16px!important;gap:20px!important;}.sp-root .sp-routing-outputs{border-left:0!important;border-top:1px solid var(--sp-border)!important;padding-left:0!important;padding-top:20px!important;}.sp-root .sp-overview-rule {gap:8px!important;}}
+.sp-root .sp-overview-rule > .sp-rule-check {grid-column:1!important;grid-row:1!important;align-self:start!important;}
+.sp-root .sp-overview-rule > .sp-rule-number {grid-column:2!important;grid-row:1!important;align-self:start!important;}
+.sp-root .sp-overview-rule > .sp-rule-details {grid-column:3!important;grid-row:1!important;}

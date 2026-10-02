@@ -368,19 +368,14 @@ export default function Home({
                 </div>
             )}
 
-            <div className="sp-overview-grid">
-                <div className="min-w-0 space-y-4">
-                    <RulesBoard
-                        live={live}
-                        channels={spec?.channels}
-                        facts={facts}
-                        onSection={onSection}
-                    />
-                    </div>
-                <div className="min-w-0">
-                    <OutputsColumn live={live} facts={facts} busy={busy} onRefresh={refresh} />
-                </div>
-                <div className="sp-checker"><ExplainCard /></div>
+            <div className="sp-checker"><ExplainCard /></div>
+            <div className="sp-routing-board">
+                <section className="sp-routing-rules">
+                    <RulesBoard live={live} channels={spec?.channels} facts={facts} onSection={onSection}/>
+                </section>
+                <section className="sp-routing-outputs">
+                    <OutputsColumn live={live} facts={facts} busy={busy} onRefresh={refresh}/>
+                </section>
             </div>
         </div>
     )
@@ -517,32 +512,22 @@ function RuleRow({
 
     return (
         <li className={`sp-overview-rule ${row.enabled ? '' : 'opacity-60'}`}>
-            <div className="sp-rule-half">
-                <div className="sp-rule-identity">
-                    <input type="checkbox" aria-label={`Включить правило ${row.name}`} checked={row.enabled} disabled={!spec} onChange={e=>{
-                        if (!spec) return
-                        pending.edit({...spec,channels:spec.channels.map(c=>c.name===row.name?{...c,enabled:e.currentTarget.checked}:c)})
-                    }} className="sp-rule-check"/>
-                    <span className="text-[11px] tabular-nums text-muted-foreground">{n}</span>
-                    <strong className="min-w-0 truncate text-[13px]">{row.name}</strong>
-                    {!row.enabled && <span className="text-[11px] text-muted-foreground">выключено</span>}
-                    {row.enabled&&set&&!set.live&&!phase&&<span className="text-[11px] text-destructive">нет в ядре</span>}
-                </div>
-                <div className="sp-rule-traffic text-[11px] text-muted-foreground">
-                    <span>↓ {down??'—'}</span><span>↑ {up??'—'}</span>
-                    {shared&&<span title={`общий счётчик: ${set!.channels!.join(', ')}`}>счётчик общий</span>}
-                </div>
+            <input type="checkbox" aria-label={`Включить правило ${row.name}`} checked={row.enabled} disabled={!spec} onChange={e=>{
+                if (!spec) return
+                pending.edit({...spec,channels:spec.channels.map(c=>c.name===row.name?{...c,enabled:e.currentTarget.checked}:c)})
+            }} className="sp-rule-check"/>
+            <span className="sp-rule-number text-xs text-muted-foreground">{n}</span>
+            <div className="sp-rule-details">
+                <strong className="sp-rule-name">{row.name}</strong>
+                <button type="button" onClick={()=>onSection('vpn')} className="sp-rule-destination">
+                    <span aria-hidden="true">→</span><Flag cc={facts?.geo?.cc}/><strong>{row.out}</strong>
+                    <span>{st?.kind==='direct'?'напрямую':[via,facts?.ping&&facts.ping.ms>=0?`${facts.ping.ms} мс`:null].filter(Boolean).join(' · ')||'не поднят'}</span>
+                </button>
+                <div className="sp-rule-counters"><span>↓ {down??'—'}</span><span>↑ {up??'—'}</span>{shared&&<span title={`общий счётчик: ${set!.channels!.join(', ')}`}>счётчик общий</span>}</div>
+                {(!row.enabled||row.enabled&&set&&!set.live&&!phase)&&<p className="sp-rule-note">{!row.enabled?'выключено':'нет в ядре'}</p>}
+                {(spare.length>0||st&&st.kind!=='direct')&&<p className="sp-rule-note">{spare.length?`запас: ${spare.join(', ')}`:`если всё упало: ${ON_FAIL_TEXT[st?.on_fail||'drop']}`}</p>}
             </div>
-            <div className="sp-rule-half sp-rule-outbound">
-                <div className="sp-rule-output-line">
-                    <button type="button" onClick={()=>onSection('vpn')} className="sp-rule-output-link">
-                        <Flag cc={facts?.geo?.cc}/><strong className="text-[13px]">{row.out}</strong>
-                        <span className="text-[11px] text-muted-foreground">{st?.kind==='direct'?'напрямую':[via,facts?.ping&&facts.ping.ms>=0?`${facts.ping.ms} мс`:null].filter(Boolean).join(' · ')||'не поднят'}</span>
-                    </button>
-                    <button type="button" aria-label={`Редактировать правило ${row.name}`} onClick={()=>onSection('rules',row.name)} className="sp-rule-edit text-primary"><Pencil className="h-4 w-4" aria-hidden="true"/></button>
-                </div>
-                <div className="sp-rule-fallback text-[11px] text-muted-foreground">{spare.length?`запас: ${spare.join(', ')}`:st&&st.kind!=='direct'?`если всё упало: ${ON_FAIL_TEXT[st.on_fail||'drop']}`:''}</div>
-            </div>
+            <button type="button" aria-label={`Редактировать правило ${row.name}`} onClick={()=>onSection('rules',row.name)} className="sp-rule-edit text-primary"><Pencil className="h-4 w-4" aria-hidden="true"/></button>
         </li>
     )
 }

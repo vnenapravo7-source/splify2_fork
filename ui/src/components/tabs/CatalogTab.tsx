@@ -1,9 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Plus, RefreshCw, Search, Trash2 } from 'lucide-react'
+import { RefreshCw, Search, Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { notify } from '@/lib/notify'
 import { rpc } from '@/lib/rpc'
-import CustomLists from '@/components/CustomLists'
 import { Hint } from '@/components/ui/hint'
 import {
     toAllowDomainsServices,
@@ -101,7 +100,6 @@ export default function CatalogTab({ onUseInRule }: Props) {
     const [only, setOnly] = useState<'all' | 'used'>('all')
     /** Форма своих списков — по кнопке, а не всегда: за ней приходят редко, а место
      *  над каталогом она занимала всегда. Открытой остаётся, пока вкладку не покинули. */
-    const [customOpen, setCustomOpen] = useState(false)
     /** Идёт общий прогон обновления. Отдельно от `busy`: тот про одну запись, а этот
      *  запирает кнопку целиком — два прогона разом скрипт всё равно не пустит. */
     const [updating, setUpdating] = useState(false)
@@ -288,17 +286,10 @@ export default function CatalogTab({ onUseInRule }: Props) {
                     />{' '}
                     Обновить списки
                 </Button>
-                <Button variant="secondary" onClick={() => setCustomOpen((v) => !v)} aria-expanded={customOpen}>
-                    <Plus className="mr-1 h-4 w-4" aria-hidden="true" /> Свой список
-                </Button>
+
             </div>
 
-            {customOpen && (
-                <CustomLists
-                    local={local}
-                    onChanged={async () => setLocal((await rpc.localLists()).files || {})}
-                />
-            )}
+
 
             <div className="overflow-x-auto rounded-xl border border-border bg-card shadow-card lg:rounded-2xl">
                 {/* sp-stack: на узком экране строки таблицы встают блоками, а шапка убирается —
