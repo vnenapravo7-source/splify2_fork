@@ -489,12 +489,12 @@ export default function PoolEditor({
                 </div>
             </div>
 
-            <div className="sp-search grid gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(0,26rem)]">
+            <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(0,26rem)]">
                 {/* ---- слева: что можно взять ------------------------------------------ */}
                 <Card>
                     <CardHeader className="space-y-3">
                         <CardTitle>Что можно взять</CardTitle>
-                        <label className="flex h-9 items-center gap-2 rounded-lg border border-border bg-background px-3">
+                        <label className="sp-search flex h-9 items-center gap-2 rounded-lg border border-border bg-background px-3">
                             <Search className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" />
                             <input
                                 value={query}
