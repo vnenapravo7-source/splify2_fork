@@ -188,3 +188,12 @@ body:has(.sp-confirm-overlay) .sp-apply-portal {visibility:hidden!important;}
 .sp-root .sp-routing-board > section > div {gap:8px!important;}
 @media(max-width:1000px){.sp-root .sp-rule-details {grid-template-columns:minmax(0,1fr)!important;}.sp-root .sp-rule-counters,.sp-root .sp-rule-note {grid-column:1!important;}}
 @media(max-width:767px){.sp-root .sp-routing-board {padding:14px!important;gap:14px!important;}.sp-root .sp-routing-outputs {padding-left:0!important;padding-top:14px!important;}.sp-root .sp-overview-rule {padding:10px 0!important;}}
+@media(max-width:767px){
+ .sp-root .sp-catalog-table,.sp-root .sp-catalog-table tbody {display:block!important;width:100%!important;min-width:0!important;max-width:100%!important;}
+ .sp-root .sp-catalog-table tr {display:block!important;width:100%!important;box-sizing:border-box!important;padding:12px!important;}
+ .sp-root .sp-catalog-table td {display:block!important;width:auto!important;max-width:100%!important;white-space:normal!important;overflow-wrap:anywhere!important;padding:0!important;}
+ .sp-root .sp-catalog-table td > div {white-space:normal!important;overflow-wrap:anywhere!important;max-width:100%!important;}
+ .sp-root .sp-catalog-table td:nth-child(2),.sp-root .sp-catalog-table td:nth-child(3) {display:inline-block!important;margin-top:8px!important;}
+ .sp-root .sp-catalog-table td > .flex {flex-wrap:wrap!important;justify-content:flex-start!important;}
+ .sp-root .sp-catalog-toolbar > [role=tablist] {width:100%!important;flex-wrap:wrap!important;}
+}
