@@ -1,3 +1,4 @@
+import Rail from '@/components/Rail'
 import { fireEvent, render, screen, waitFor } from '@testing-library/preact'
 import { beforeEach, expect, it, vi } from 'vitest'
 import Home from '@/components/sections/Home'
@@ -40,7 +41,7 @@ it('backup is at the bottom of settings and the whole named row opens general se
     expect(container.querySelector('.sp-settings')?.lastElementChild?.textContent).toContain('Бэкап настроек')
     expect(screen.queryByRole('button', { name: /Дополнительно/ })).toBeNull()
     fireEvent.click(screen.getByText('Общее'))
-    expect(await screen.findByRole('heading', { name: 'Общее' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Общее/ })).toHaveAttribute('aria-expanded','true')
 })
 it('DoH lives in connections and keeps its original controls', async () => {
     vi.spyOn(rpc, 'dohState').mockResolvedValue({ installed: false } as never)
@@ -53,4 +54,28 @@ it('catalog and custom lists are reachable from rules', async () => {
     expect(screen.getByRole('button', { name: 'Каталог' })).toBeInTheDocument()
     fireEvent.click(screen.getByRole('button', { name: 'Свои списки' }))
     expect(await screen.findByText('Свои списки', { selector: 'h3' })).toBeInTheDocument()
+})
+
+it('navigation counts active VPNs and shows problems beside overview',()=>{
+ const {container}=render(<Rail section="home" onSection={()=>{}} counts={{vpn:{text:'9'}}} live={live({build:{present:true,vless:true,running:true,enabled:true,version:'1.5.9'},diag:{checks:[],fail:1,warn:0},status:{outputs:{vpn:{kind:'interface',up:true},down:{kind:'interface',up:false},direct:{kind:'direct',up:true},part:{kind:'vless',up:true,part_of:'vpn'},zapret:{kind:'zapret',up:true}}} as never})}/> )
+ expect(screen.getByRole('button',{name:/Подключения/})).toHaveTextContent('1')
+ expect(screen.getByLabelText('Есть проблемы')).toBeInTheDocument()
+ expect(container.querySelector('header .sp-engine-compact')).toContainElement(screen.getByRole('button',{name:'Остановить всё'}))
+})
+it('settings deep link opens diagnostics and leaves backup collapsed last',()=>{
+ const {container}=render(<Settings live={live()} initial="diag"/> )
+ expect(Array.from(container.querySelectorAll('.sp-fold-heading strong')).map(n=>n.textContent)).toEqual(['Общее','Диагностика','О ПО','Бэкап настроек'])
+ expect(screen.getByRole('button',{name:/Диагностика/})).toHaveAttribute('aria-expanded','true')
+ expect(screen.getByRole('button',{name:/Бэкап настроек/})).toHaveAttribute('aria-expanded','false')
+ fireEvent.click(screen.getByRole('button',{name:/Бэкап настроек/}))
+ expect(screen.getByRole('button',{name:/Диагностика/})).toHaveAttribute('aria-expanded','false')
+ expect(screen.getByRole('button',{name:'Скачать архив'})).toBeInTheDocument()
+})
+it('closed sources show subscription count and DoH state',async()=>{
+ vi.spyOn(rpc,'subList').mockResolvedValue({subs:[{name:'a',path:'/a',present:true,mtime:Math.floor(Date.now()/1000)-10800},{name:'b',path:'/b',present:true}]})
+ vi.spyOn(rpc,'dohState').mockResolvedValue({installed:true,running:true} as never)
+ render(<Vpn live={live()}/> )
+ await waitFor(()=>expect(screen.getByRole('button',{name:/Подписки/})).toHaveTextContent('2 · последнее обновление 3 ч назад'))
+ expect(screen.getByRole('button',{name:/DoH/})).toHaveTextContent('Включён')
+ expect(screen.getByRole('button',{name:/Подписки/})).toHaveAttribute('aria-expanded','false')
 })

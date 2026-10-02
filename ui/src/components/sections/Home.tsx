@@ -519,7 +519,7 @@ function RuleRow({
         <li className={`py-2.5 ${row.enabled ? '' : 'opacity-60'}`}>
             {/* Строка читается как предложение: правило → куда оно ведёт СЕЙЧАС. Ниже, мельче,
                 то, что спрашивают вторым: сколько через него прошло и что стоит в запасе. */}
-            <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+            <div className="sp-rule-line flex flex-wrap items-center gap-x-2 gap-y-0.5">
                 <input type="checkbox" aria-label={`Включить правило ${row.name}`} checked={row.enabled} disabled={!spec} onChange={(e) => {
                     if (!spec) return
                     pending.edit({ ...spec, channels: spec.channels.map(c => c.name === row.name ? { ...c, enabled: e.currentTarget.checked } : c) })
@@ -538,7 +538,7 @@ function RuleRow({
                 <button
                     type="button"
                     onClick={() => onSection('vpn')}
-                    className="flex min-w-0 items-baseline gap-1.5 text-left"
+                    className="flex min-w-0 items-center gap-1.5 text-left"
                 >
                     <Flag cc={facts?.geo?.cc} />
                     <span className="min-w-0 truncate text-[13px] font-medium">{row.out}</span>

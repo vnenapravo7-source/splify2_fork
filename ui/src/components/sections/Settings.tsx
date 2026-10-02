@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
-import { ChevronLeft, Info, Sliders, Stethoscope } from 'lucide-react'
-import HubRow from '@/components/HubRow'
+import { Info, Sliders, Stethoscope } from 'lucide-react'
+import Fold from '@/components/Fold'
 import Diagnostics from '@/components/sections/Diagnostics'
 import BackupCard from '@/components/BackupCard'
 import ClientNetsCard from '@/components/ClientNetsCard'
@@ -14,8 +14,7 @@ import { pending, usePending } from '@/lib/pending'
 import { type Spec } from '@/lib/model'
 import { type Live } from '@/lib/live'
 
-type Screen = 'root' | 'diag' | 'general' | 'about'
-const TITLE = { diag: 'Диагностика', general: 'Общее', about: 'О ПО' }
+type Screen = 'root' | 'diag' | 'general' | 'about' | 'backup'
 
 export default function Settings({ live, initial }: { live: Live; initial?: Screen }) {
     const [screen, setScreen] = useState<Screen>(initial ?? 'root')
@@ -24,23 +23,10 @@ export default function Settings({ live, initial }: { live: Live; initial?: Scre
     useEffect(() => { void pending.load().then(setEditable).catch(() => setEditable(null)) }, [])
     useEffect(() => { if (initial) setScreen(initial) }, [initial])
     const warnings = (live.diag?.fail ?? 0) + (live.diag?.warn ?? 0)
-    if (screen !== 'root') return <div className="space-y-4">
-        <button type="button" onClick={() => setScreen('root')} className="flex items-center gap-1 text-sm text-primary"><ChevronLeft className="h-4 w-4" aria-hidden="true" /> Настройки</button>
-        <h2 className="sp-title">{TITLE[screen]}</h2>
-        {screen === 'diag' && <Diagnostics live={live} />}
-        {screen === 'general' && <>
-            <ClientNetsCard spec={editable} status={live.status} onChange={(next) => { setEditable(next); pending.edit(next) }} />
-            <FetchCard /><ListsSourceCard /><ZmFixCard />
-        </>}
-        {screen === 'about' && <>
-            <EngineCard engine={live.build} releases={live.releases} onInstalled={live.refresh} />
-            <SelfUpdateCard info={live.selfUpdate} onInstalled={live.refresh} /><TelemetryCard />
-        </>}
-    </div>
     return <div className="sp-settings space-y-3">
-        <HubRow icon={Stethoscope} title="Диагностика" state={warnings ? `проверок с находками: ${warnings}` : 'находок нет'} alarm={warnings > 0} onClick={() => setScreen('diag')} />
-        <HubRow icon={Sliders} title="Общее" state={(live.status?.lan_devices || spec?.lan_devices || []).join(', ') || 'Сеть и загрузки'} onClick={() => setScreen('general')} />
-        <HubRow icon={Info} title="О ПО" state={[live.selfUpdate?.current ? `splify2 ${live.selfUpdate.current}` : '', live.build?.version ? `steer ${live.build.version}` : ''].filter(Boolean).join(' · ')} onClick={() => setScreen('about')} />
-        <div className="sp-backup-inline"><BackupCard /></div>
+      <Fold title="Общее" subtitle={(live.status?.lan_devices||spec?.lan_devices||[]).join(', ')||'Сеть и загрузки'} icon={Sliders} open={screen==='general'} onToggle={()=>setScreen(screen==='general'?'root':'general')}><ClientNetsCard spec={editable} status={live.status} onChange={next=>{setEditable(next);pending.edit(next)}}/><FetchCard/><ListsSourceCard/><ZmFixCard/></Fold>
+      <Fold title="Диагностика" subtitle={warnings?`Проверок с находками: ${warnings}`:live.diag?'Находок нет':'Проверки загружаются'} icon={Stethoscope} open={screen==='diag'} onToggle={()=>setScreen(screen==='diag'?'root':'diag')}><Diagnostics live={live}/></Fold>
+      <Fold title="О ПО" subtitle={[live.selfUpdate?.current,live.build?.version].filter(Boolean).join(' · ')} icon={Info} open={screen==='about'} onToggle={()=>setScreen(screen==='about'?'root':'about')}><EngineCard engine={live.build} releases={live.releases} onInstalled={live.refresh}/><SelfUpdateCard info={live.selfUpdate} onInstalled={live.refresh}/><TelemetryCard/></Fold>
+      <Fold title="Бэкап настроек" subtitle="Скачать или восстановить архив" icon={Info} open={screen==='backup'} onToggle={()=>setScreen(screen==='backup'?'root':'backup')}><BackupCard showTitle={false}/></Fold>
     </div>
 }

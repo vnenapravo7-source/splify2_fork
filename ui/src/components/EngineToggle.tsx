@@ -26,7 +26,7 @@ export default function EngineToggle({
     live: Live
     /** `rail` — подвал рельса: сведения о движке плюс кнопка. `block` — узкий экран: только
      *  кнопка, сведения там были бы тремя строками справки поперёк дороги. */
-    variant: 'rail' | 'block'
+    variant: 'rail' | 'block' | 'compact'
     onSection?: (s: SectionId) => void
 }) {
     const [toggling, setToggling] = useState(false)
@@ -79,6 +79,7 @@ export default function EngineToggle({
      * кнопка в никуда хуже отсутствующей. */
     if (!eng) return null
 
+    if (variant==='compact') return <div className="sp-engine-compact">{confirmDialog}<button type="button" className="sp-engine-label" onClick={()=>onSection?.('settings')} title={eng.enabled===false&&eng.running===true?'Движок работает, хотя автозапуск снят':engineAction(eng,live.releases).label}>{eng.present?`steer ${eng.version||'—'}`:'Установить движок'}</button>{eng.present&&<Button variant={off?'secondary':'destructive'} size="sm" disabled={toggling} onClick={toggleEngine} aria-label={off?'Запустить':'Остановить всё'}><Power className="h-4 w-4" aria-hidden="true"/>{toggling?'…':off?'Пуск':'Стоп'}</Button>}</div>
     return (
         <div className="flex flex-col gap-2">
             {confirmDialog}

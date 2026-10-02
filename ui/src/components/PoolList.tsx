@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react'
-import { ArrowRight, Globe, Plus, ShieldCheck, Waves } from 'lucide-react'
+import { Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardHeader, CardTitle } from '@/components/ui/card'
-import HubRow from '@/components/HubRow'
 import PoolEditor from '@/components/PoolEditor'
 import { rpc } from '@/lib/rpc'
 import { pending } from '@/lib/pending'
@@ -141,7 +140,6 @@ export default function PoolList({
                                         .filter(Boolean)
                                         .join(' · ')
                                   : [
-                                      country(g?.cc),
                                       o.kind === 'vless'
                                           ? 'подписка'
                                           : devs
@@ -153,28 +151,12 @@ export default function PoolList({
                                                     return p && isPart(p) ? subTitle(p.sub_file) : d
                                                 })
                                                 .join(' → ') || 'устройство не выбрано',
-                                      g?.ms ? `${g.ms} мс` : '',
                                       rules ? `правил: ${rules}` : '',
                                   ]
                                       .filter(Boolean)
                                       .join(' · ')
                         return (
-                            <HubRow
-                                key={name}
-                                icon={
-                                    o.kind === 'direct'
-                                        ? ArrowRight
-                                        : o.kind === 'vless'
-                                          ? Globe
-                                          : o.kind === 'zapret'
-                                            ? Waves
-                                            : ShieldCheck
-                                }
-                                title={name}
-                                state={state}
-                                alarm={o.kind !== 'direct' && st?.up === false}
-                                onClick={() => setEditing(name)}
-                            />
+                            <details key={name} className="sp-output-detail"><summary className="sp-output-summary"><strong>{name}</strong><span key={`${g?.cc||''}:${g?.ms||''}`} className="sp-updated text-sm text-muted-foreground">{country(g?.cc)}{g?.ms?` · ${g.ms} мс`:''}</span><span className={st?.up===false?'text-warning-fg text-xs':'text-xs text-muted-foreground'}>{st?.up===true?'Подключён':st?.up===false?'Недоступен':'Состояние неизвестно'}</span></summary><div><p className="mb-3 text-sm text-muted-foreground">{state}</p><Button size="sm" variant="secondary" onClick={()=>setEditing(name)}>Редактировать {name}</Button></div></details>
                         )
                     })}
                 </div>

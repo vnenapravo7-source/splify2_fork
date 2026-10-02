@@ -91,12 +91,14 @@ function stamp(): string {
 
 export default function BackupCard({
     onRestored = () => location.reload(),
+    showTitle = true,
 }: {
     /** Что делать после удачного восстановления. По умолчанию — перезагрузить страницу, и
      *  это не косметика: спека живёт в памяти страницы (lib/pending.ts), и следующая же
      *  правка записала бы ПРЕЖНЮЮ спеку поверх восстановленной. Параметр есть, чтобы это
      *  можно было проверить стендом, а не чтобы отключать перезагрузку. */
     onRestored?: () => void
+    showTitle?: boolean
 }) {
     const [busy, setBusy] = useState<'' | 'export' | 'import'>('')
     const fileRef = useRef<HTMLInputElement>(null)
@@ -171,9 +173,9 @@ export default function BackupCard({
     return (
         <Card>
             {dialog}
-            <CardHeader className="pb-2">
+            {showTitle && <CardHeader className="pb-2">
                 <CardTitle className="text-base">Бэкап настроек</CardTitle>
-            </CardHeader>
+            </CardHeader>}
             <CardContent className="space-y-3">
                 <p className="text-sm text-muted-foreground">
                     Один файл: правила, выходы, подписка и свои списки. Списки каталога не входят — роутер скачает

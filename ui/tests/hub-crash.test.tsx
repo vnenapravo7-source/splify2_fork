@@ -47,9 +47,9 @@ describe('вкладки не гаснут после первого опрос�
         render(<Console />)
         await screen.findByRole('heading', { name: 'Маршрутизация работает' })
         nav(/Настройки/).click()
-        expect(await screen.findByRole('button', { name: /Общее/ })).toBeInTheDocument()
+        expect(await screen.findByRole('button', { name: /Общее/ })).toHaveAttribute('aria-expanded','false')
         await new Promise((r) => setTimeout(r, 300))
-        expect(screen.getByRole('button', { name: /Общее/ })).toBeInTheDocument()
+        expect(screen.getByRole('button', { name: /Общее/ })).toHaveAttribute('aria-expanded','false')
     })
 
     it('переход VPN → Настройки → VPN ничего не гасит', async () => {
@@ -68,8 +68,8 @@ describe('вкладки не гаснут после первого опрос�
         await screen.findByRole('heading', { name: 'Маршрутизация работает' })
         nav(/Настройки/).click()
         ;(await screen.findByRole('button', { name: /Общее/ })).click()
-        await waitFor(() => expect(screen.getByRole('heading', { name: 'Общее' })).toBeInTheDocument())
-        screen.getAllByRole('button', { name: /Настройки/ }).at(-1)!.click()
+        await waitFor(() => expect(screen.getByRole('button', { name: /Общее/ })).toHaveAttribute('aria-expanded','true'))
+        screen.getByRole('button', { name: /Общее/ }).click()
         expect(await screen.findByRole('button', { name: /Общее/ })).toBeInTheDocument()
     })
 })

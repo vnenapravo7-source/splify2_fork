@@ -36,7 +36,7 @@ const EXPECTED_JS = [
   // «Кого маршрутизируем» (ClientNetsCard) куском больше не является: карточку читает один
   // раздел — Настройки → Общее, — из правил она убрана как повтор, и rollup вернул её в кусок
   // настроек.
-  'splify-HubRow.js',
+  'splify-Fold.js',
 ]
 
 const js = readdirSync(DIST).filter((f) => f.endsWith('.js')).sort()

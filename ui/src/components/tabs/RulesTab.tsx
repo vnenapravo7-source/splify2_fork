@@ -100,6 +100,7 @@ interface Props {
      *  открыть раздел: подпись обещает действие, и перевод в список без нового правила
      *  читается как несработавшая кнопка. */
     addNow?: boolean
+    hideAddButton?: boolean
     onAddUsed?: () => void
     /** Уйти туда, где собирают пул. Правилу некуда вести, пока пула нет, и оставлять
      *  человека с советом «соберите» без дороги туда — это тупик в один щелчок. */
@@ -107,7 +108,7 @@ interface Props {
 }
 
 export default function RulesTab({
-    live, wanted, onWantedUsed, addNow, onAddUsed, onGoOutbounds, editName, onEditUsed,
+    live, wanted, onWantedUsed, addNow, hideAddButton, onAddUsed, onGoOutbounds, editName, onEditUsed,
 }: Props) {
     const [spec, setSpec] = useState<Spec | null>(null)
     const [catalogServices, setServices] = useState<ServiceEntry[]>([])
@@ -480,9 +481,9 @@ export default function RulesTab({
                     <Button variant="ghost" onClick={addException}>
                         Исключение
                     </Button>
-                    <Button onClick={add}>
+                    {!hideAddButton && <Button onClick={add}>
                         <Plus className="mr-1 h-4 w-4" aria-hidden="true" /> Новое правило
-                    </Button>
+                    </Button>}
                 </div>
             </div>
 

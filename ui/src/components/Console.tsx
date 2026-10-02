@@ -8,7 +8,6 @@ import Rail from '@/components/Rail'
 import FirstRun from '@/components/FirstRun'
 import ApplyPill from '@/components/ApplyPill'
 import Home from '@/components/sections/Home'
-import EngineToggle from '@/components/EngineToggle'
 
 /** Пульт: рельс разделов слева, работа справа.
  *
@@ -164,14 +163,6 @@ export default function Console() {
                             />
                         )}
                     </Suspense>
-
-                    {/* «Остановить всё» на узком экране — здесь, а не в нижней панели: красной
-                        кнопке на всю ширину там не место, а прятать её нельзя (R-017). Под
-                        содержимым раздела, на любом из них — то же свойство «доступна всегда»,
-                        что у подвала рельса на широком экране. */}
-                    <div className="sp-engine-footer mt-6">
-                        <EngineToggle live={live} variant="rail" onSection={(s) => go(s)} />
-                    </div>
 
                     <div className="mt-6 border-t border-border pt-3 text-right text-xs text-muted-foreground">
                         powered by{' '}

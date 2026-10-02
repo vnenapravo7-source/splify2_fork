@@ -31,7 +31,9 @@ npm run build
 
 Сборка пакета производится исходным build.sh в Linux. Код ориентирован на движок steer схемы v1, как релиз 26.9.2; совместимость с Bode/steer 2.0 здесь не заявлена. На живом роутере этот форк пока не проверен.
 
-Установщик и самообновление интерфейса направлены на vnenapravo7-source/splify2_fork. Готовые пакеты доступны в [релизе 26.9.4 Glass Expressive](https://github.com/vnenapravo7-source/splify2_fork/releases/tag/v26.9.4). Движок, каталог и сторонние модули продолжают использовать исходные источники. Перед установкой сохраните архив настроек.
+Нейтральные стеклянные поверхности, компактный движок в верхней навигации, сводки подписок и DoH, раскрываемые строки VPN и разделы настроек. Бэкап расположен последним раскрываемым пунктом.
+
+Установщик и самообновление интерфейса направлены на vnenapravo7-source/splify2_fork. Готовые пакеты доступны в [релизе 26.9.5 Glass Expressive](https://github.com/vnenapravo7-source/splify2_fork/releases/tag/v26.9.5). Движок, каталог и сторонние модули продолжают использовать исходные источники. Перед установкой сохраните архив настроек.
 
 Исходная документация: [docs/UPSTREAM_README.md](docs/UPSTREAM_README.md). История разработки оригинала сохранена.
 
@@ -40,7 +42,7 @@ npm run build
 Выполните по SSH на роутере:
 
 ```sh
-wget -O /tmp/splify2-install.sh https://raw.githubusercontent.com/vnenapravo7-source/splify2_fork/v26.9.4/install.sh && sh /tmp/splify2-install.sh
+wget -O /tmp/splify2-install.sh https://raw.githubusercontent.com/vnenapravo7-source/splify2_fork/v26.9.5/install.sh && sh /tmp/splify2-install.sh
 ```
 
 Установщик определяет apk/opkg и архитектуру сам. Для ручной установки скачайте файл `.apk` для apk или `.ipk` для opkg из релиза.
