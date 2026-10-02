@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
-import { t } from '@/lib/i18n'
+import { createPortal } from 'react-dom'
 import { AlertTriangle } from 'lucide-react'
 
 // In-page confirmation instead of window.confirm().
@@ -40,7 +40,7 @@ export function useConfirm(): [(req: ConfirmRequest) => Promise<boolean>, React.
 
   const dialog = pending ? (
     <div
-      className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/40 p-4"
+      className="sp-confirm-overlay fixed inset-0 z-[1000] flex items-center justify-center bg-black/40 p-4"
       role="dialog" aria-modal="true" aria-label={pending.title}
       // Click-outside and Esc both cancel: the safe outcome is always "no".
       onClick={(e) => { if (e.target === e.currentTarget) close(false) }}
@@ -54,14 +54,14 @@ export function useConfirm(): [(req: ConfirmRequest) => Promise<boolean>, React.
           </h4>
           {pending.body && <p className="mt-2 text-sm text-muted-foreground">{pending.body}</p>}
           <div className="mt-4 flex justify-end gap-2">
-            <Button size="sm" variant="outline" onClick={() => close(false)}>{t('Cancel')}</Button>
+            <Button size="sm" variant="outline" onClick={() => close(false)}>Отменить</Button>
             <Button
               size="sm"
               variant={pending.tone === 'default' ? 'default' : 'destructive'}
               autoFocus
               onClick={() => close(true)}
             >
-              {pending.confirmLabel || t('Confirm')}
+              {pending.confirmLabel || 'Подтвердить'}
             </Button>
           </div>
         </CardContent>
@@ -69,5 +69,5 @@ export function useConfirm(): [(req: ConfirmRequest) => Promise<boolean>, React.
     </div>
   ) : null
 
-  return [ask, dialog]
+  return [ask, dialog ? createPortal(dialog, document.querySelector('.sp-root') || document.body) : null]
 }

@@ -557,7 +557,7 @@ export default function RulesTab({
                             return (
                                 <li
                                     key={`rule-m-${originalIndex}`}
-                                    className={`rounded-xl border border-border bg-card p-3 shadow-card ${on ? '' : 'opacity-50'}`}
+                                    className={`sp-rule-mobile rounded-xl border border-border bg-card p-3 shadow-card ${on ? '' : 'opacity-50'}`}
                                 >
                                     {ruleName(ch, originalIndex, on)}
                                     <div className="mt-2 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-[13px]">
@@ -573,7 +573,7 @@ export default function RulesTab({
                     </ul>
 
                     <div className="hidden overflow-x-auto rounded-2xl border border-border bg-card shadow-card md:block">
-                        <table className="w-full text-sm">
+                        <table className="sp-rules-table w-full text-sm">
                             <thead>
                                 <tr className="border-b border-border text-left text-xs uppercase tracking-wide text-muted-foreground">
                                     <th className="px-3 py-2">Что перенаправляем</th>

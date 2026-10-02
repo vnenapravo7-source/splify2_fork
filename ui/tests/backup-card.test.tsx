@@ -117,7 +117,7 @@ describe('карточка бекапа', () => {
         render(<BackupCard />)
         pickFile(screen.getByLabelText('Файл с настройками'), 'splify2-backup 1\n')
         await screen.findByText(/Восстановить настройки из файла/)
-        fireEvent.click(screen.getByRole('button', { name: /Cancel|Отмена/ }))
+        fireEvent.click(screen.getByRole('button', { name: /Отменить/ }))
         await waitFor(() => expect(put).not.toHaveBeenCalled())
     })
 

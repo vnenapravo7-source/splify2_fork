@@ -176,7 +176,7 @@ export default function BackupCard({
             {showTitle && <CardHeader className="pb-2">
                 <CardTitle className="text-base">Бэкап настроек</CardTitle>
             </CardHeader>}
-            <CardContent className="space-y-3">
+            <CardContent className={showTitle ? "space-y-3" : "sp-backup-content space-y-3"}>
                 <p className="text-sm text-muted-foreground">
                     Один файл: правила, выходы, подписка и свои списки. Списки каталога не входят — роутер скачает
                     их сам.

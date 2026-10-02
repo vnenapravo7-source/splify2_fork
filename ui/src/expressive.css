@@ -79,3 +79,37 @@
 .sp-root .sp-output-summary::-webkit-details-marker {display:none!important;}
 .sp-root .sp-fold-content .sp-glass-card {border-color:transparent!important;}
 @media(prefers-reduced-motion:reduce){.sp-root .sp-updated{animation:none!important;}.sp-root .sp-fold-heading svg{transition:none!important;}}
+
+/* Backup has no card heading inside the settings accordion. */
+.sp-root .sp-backup-content { padding-top:16px!important; }
+
+.sp-root .sp-release-select {padding-right:40px!important;max-width:100%!important;width:auto!important;min-width:300px!important;}
+.sp-root .sp-release-select option {padding-right:20px!important;}
+.sp-root .sp-output-row .sp-output-summary {cursor:default!important;}
+.sp-root .sp-output-row .sp-output-summary::after {content:none!important;}
+.sp-root .sp-output-row .sp-button {margin-left:auto!important;}
+.sp-root .sp-output-composition {margin-left:auto!important;}
+.sp-root .sp-rules-table,.sp-root .sp-rules-table tbody,.sp-root .sp-rules-table tr,.sp-root .sp-rules-table td {background:transparent!important;}
+.sp-root .sp-rules-table thead {background:var(--sp-chrome)!important;}
+.sp-root .sp-rules-table th {background:transparent!important;}
+.sp-root .sp-rules-table tbody tr:hover {background:var(--sp-accent)!important;}
+.sp-root .sp-rule-mobile {background:var(--sp-glass)!important;}
+.sp-root .sp-brand > div {display:flex!important;align-items:center!important;gap:10px!important;}
+.sp-root .sp-brand {min-height:40px!important;}
+.sp-root .sp-topnav .sp-nav-item {min-height:40px!important;padding:8px 12px!important;box-sizing:border-box!important;}
+.sp-root .sp-engine-compact .sp-button {height:40px!important;min-height:40px!important;box-sizing:border-box!important;}
+@media(max-width:767px){.sp-root .sp-release-select {min-width:0!important;width:100%!important;}.sp-root .sp-brand > div {flex-direction:column!important;align-items:flex-start!important;gap:0!important;}.sp-root .sp-output-composition{margin-left:0!important;width:100%!important;}}
+
+.sp-root .sp-rule-line {display:grid!important;grid-template-columns:18px 18px minmax(120px,180px) 34px 14px minmax(0,1fr)!important;column-gap:10px!important;row-gap:4px!important;}
+.sp-root .sp-rule-check {grid-column:1!important;margin:0!important;}
+.sp-root .sp-rule-line > span:nth-child(2) {grid-column:2!important;}
+.sp-root .sp-rule-line > span:nth-child(3) {grid-column:3!important;}
+.sp-root .sp-rule-edit {grid-column:4!important;grid-row:1!important;}
+.sp-root .sp-rule-arrow {grid-column:5!important;grid-row:1!important;}
+.sp-root .sp-rule-target {grid-column:6!important;grid-row:1!important;}
+.sp-root .sp-rule-notice {grid-column:3 / -1!important;grid-row:2!important;}
+.sp-root .sp-rule-meta {padding-left:56px!important;padding-top:4px!important;}
+.sp-root .sp-confirm-overlay {position:fixed!important;inset:0!important;z-index:1000!important;display:flex!important;align-items:center!important;justify-content:center!important;padding:20px!important;background:#0009!important;}
+.sp-root .sp-confirm-overlay > .sp-glass-card {background:var(--sp-popover)!important;backdrop-filter:none!important;width:100%!important;max-width:480px!important;box-shadow:0 24px 80px #0006!important;}
+.sp-root .sp-confirm-overlay .sp-glass-card > div {padding:24px!important;}
+@media(max-width:767px){.sp-root .sp-rule-line {grid-template-columns:18px 18px minmax(0,1fr) 34px!important;}.sp-root .sp-rule-arrow {display:none!important;}.sp-root .sp-rule-target {grid-column:3 / -1!important;grid-row:2!important;flex-wrap:wrap!important;}.sp-root .sp-rule-notice {grid-row:3!important;}}

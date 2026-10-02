@@ -156,7 +156,7 @@ export default function PoolList({
                                       .filter(Boolean)
                                       .join(' · ')
                         return (
-                            <details key={name} className="sp-output-detail"><summary className="sp-output-summary"><strong>{name}</strong><span key={`${g?.cc||''}:${g?.ms||''}`} className="sp-updated text-sm text-muted-foreground">{country(g?.cc)}{g?.ms?` · ${g.ms} мс`:''}</span><span className={st?.up===false?'text-warning-fg text-xs':'text-xs text-muted-foreground'}>{st?.up===true?'Подключён':st?.up===false?'Недоступен':'Состояние неизвестно'}</span></summary><div><p className="mb-3 text-sm text-muted-foreground">{state}</p><Button size="sm" variant="secondary" onClick={()=>setEditing(name)}>Редактировать {name}</Button></div></details>
+                            <div key={name} className="sp-output-detail sp-output-row"><div className="sp-output-summary"><strong>{name}</strong><span key={`${g?.cc||''}:${g?.ms||''}`} className="sp-updated text-sm text-muted-foreground">{country(g?.cc)}{g?.ms?` · ${g.ms} мс`:''}</span><span className={st?.up===false?'text-warning-fg text-xs':'text-xs text-muted-foreground'}>{st?.up===true?'Подключён':st?.up===false?'Недоступен':'Состояние неизвестно'}</span><span className="sp-output-composition text-xs text-muted-foreground">{state}</span><Button size="sm" variant="secondary" aria-label={`Редактировать ${name}`} onClick={()=>setEditing(name)}>Редактировать</Button></div></div>
                         )
                     })}
                 </div>

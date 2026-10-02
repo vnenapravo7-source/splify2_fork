@@ -87,7 +87,7 @@ export default function SelfUpdateCard({
                         value={ver}
                         onChange={(e) => setVer(e.target.value)}
                         aria-label={t('Версия интерфейса')}
-                        className="rounded-lg border border-input bg-transparent px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                        className="sp-release-select rounded-lg border border-input bg-transparent px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                     >
                         {info === null && <option value="">{t('загрузка…')}</option>}
                         {info !== null && versions.length === 0 && <option value="">{t('релизов не найдено')}</option>}

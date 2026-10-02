@@ -20,10 +20,10 @@ export default function Vpn({live}:{live:Live}) {
     const latest=Math.max(0,...(subs||[]).map(s=>s.mtime||0))
     const hours=latest?Math.max(0,Math.floor((Date.now()/1000-latest)/3600)):null
     return <div className="space-y-4"><section><h2 className="sp-sub mb-4">Выходы VPN</h2><PoolList live={live}/></section><div className="sp-sources"><h2 className="sp-sub mb-4">Источники</h2>
+        <Fold {...fold("DoH")} title="DoH" subtitle={doh?(!doh.installed?'Не установлен':doh.running?'Включён':'Выключен'):'Проверка состояния'} icon={Lock}><Doh live={live}/></Fold>
         <Fold {...fold("Подписки")} title="Подписки" subtitle={subs?`${subs.length} · ${hours===null?'время обновления неизвестно':hours<1?'последнее обновление менее часа назад':`последнее обновление ${hours} ч назад`}`:'Загрузка подписок'} icon={Globe}><VlessScreen/></Fold>
         <Fold {...fold("Свои туннели")} title="Свои туннели" subtitle="WireGuard, AmneziaWG, OpenVPN" icon={ShieldCheck}><IfacesPanel live={live}/></Fold>
         <Fold {...fold("XSTEER")} title="XSTEER" subtitle="Интерфейсы и параметры" icon={Network}><XsteerPanel live={live}/></Fold>
-        <Fold {...fold("DoH")} title="DoH" subtitle={doh?(!doh.installed?'Не установлен':doh.running?'Включён':'Выключен'):'Проверка состояния'} icon={Lock}><Doh live={live}/></Fold>
         </div>
     </div>
 }

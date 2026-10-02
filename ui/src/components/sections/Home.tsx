@@ -528,17 +528,17 @@ function RuleRow({
                 <span className="min-w-0 max-w-full truncate text-[13px] font-medium">{row.name}</span>
                 <button type="button" aria-label={`Редактировать правило ${row.name}`} onClick={() => onSection('rules', row.name)} className="sp-rule-edit text-primary"><Pencil className="h-4 w-4" aria-hidden="true" /></button>
                 {!row.enabled && (
-                    <span className="text-[11px] text-muted-foreground">выключено</span>
+                    <span className="sp-rule-notice text-[11px] text-muted-foreground">выключено</span>
                 )}
                 {/* Пока применяется — набор и должен отсутствовать: таблица пересобирается. */}
                 {row.enabled && set && !set.live && !phase && (
-                    <span className="text-[11px] text-destructive">нет в ядре</span>
+                    <span className="sp-rule-notice text-[11px] text-destructive">нет в ядре</span>
                 )}
-                <ArrowRight className="h-3 w-3 shrink-0 text-muted-foreground" aria-hidden="true" />
+                <ArrowRight className="sp-rule-arrow h-3 w-3 shrink-0 text-muted-foreground" aria-hidden="true" />
                 <button
                     type="button"
                     onClick={() => onSection('vpn')}
-                    className="flex min-w-0 items-center gap-1.5 text-left"
+                    className="sp-rule-target flex min-w-0 items-center gap-1.5 text-left"
                 >
                     <Flag cc={facts?.geo?.cc} />
                     <span className="min-w-0 truncate text-[13px] font-medium">{row.out}</span>
@@ -551,7 +551,7 @@ function RuleRow({
                     </span>
                 </button>
             </div>
-            <div className="mt-0.5 flex flex-wrap gap-x-3 pl-6 text-[11px] text-muted-foreground">
+            <div className="sp-rule-meta mt-0.5 flex flex-wrap gap-x-3 pl-6 text-[11px] text-muted-foreground">
                 {/* Счётчик принадлежит НАБОРУ. Там, где движок свёл несколько правил в один
                     набор, это сказано словом, а не поделено поровну выдумкой. */}
                 <span>↓ {down ?? '—'}</span>
