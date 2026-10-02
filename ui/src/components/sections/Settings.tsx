@@ -21,7 +21,7 @@ export default function Settings({ live, initial }: { live: Live; initial?: Scre
     const { spec } = usePending()
     const [editable, setEditable] = useState<Spec | null>(null)
     useEffect(() => { void pending.load().then(setEditable).catch(() => setEditable(null)) }, [])
-    useEffect(() => { if (initial) setScreen(initial) }, [initial])
+    useEffect(() => { if (initial) setScreen(initial); if(initial==='about') requestAnimationFrame(()=>document.getElementById('sp-interface-update')?.scrollIntoView?.({block:'center'})) }, [initial])
     const warnings = (live.diag?.fail ?? 0) + (live.diag?.warn ?? 0)
     return <div className="sp-settings space-y-3">
       <Fold title="Общее" subtitle={(live.status?.lan_devices||spec?.lan_devices||[]).join(', ')||'Сеть и загрузки'} icon={Sliders} open={screen==='general'} onToggle={()=>setScreen(screen==='general'?'root':'general')}><ClientNetsCard spec={editable} status={live.status} onChange={next=>{setEditable(next);pending.edit(next)}}/><FetchCard/><ListsSourceCard/><ZmFixCard/></Fold>

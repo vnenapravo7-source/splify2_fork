@@ -18,9 +18,10 @@ import { type Live } from '@/lib/live'
  *  работает ли. Настройка открывается по нажатию, целым экраном. */
 
 export default function PoolList({
-    live, onEditingChange,
+    live, onEditingChange, title,
 }: {
     live: Live
+    title?: string
     /** Открылся или закрылся редактор выхода. Раздел выше по этому признаку убирает свои
      *  подпункты: редактор — целый экран, и три строки-входа над ним читались как часть
      *  формы, которой они не являются. */
@@ -99,7 +100,8 @@ export default function PoolList({
 
     return (
         <div className="space-y-3">
-            <div className="flex justify-end">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+                {title && <h2 className="sp-sub">{title}</h2>}
                 <Button onClick={() => setEditing('')}>
                     <Plus className="h-4 w-4" aria-hidden="true" /> Добавить выход
                 </Button>

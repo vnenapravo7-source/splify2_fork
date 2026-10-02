@@ -1,3 +1,4 @@
+import UpdateAlert from '@/components/UpdateAlert'
 import { lazy, Suspense, useEffect, useState } from 'react'
 import { Check } from 'lucide-react'
 import { useLive } from '@/lib/live'
@@ -98,6 +99,7 @@ export default function Console() {
                 фона. `min-h-full` работает от родителя с известной высотой — им и является
                 .sp-root. */}
             <div className="flex min-h-full flex-col">
+                <UpdateAlert info={live.selfUpdate} onUpdate={()=>go('settings','about')}/>
                 <Rail live={live} section={section} onSection={(s) => go(s)} counts={counts} />
 
                 {/* Отступ снизу на узком экране — под нижнюю панель разделов: без него последняя
@@ -159,7 +161,7 @@ export default function Console() {
                         {section === 'settings' && (
                             <Settings
                                 live={live}
-                                initial={sub === 'diag' ? 'diag' : undefined}
+                                initial={sub === 'diag' ? 'diag' : sub === 'about' ? 'about' : undefined}
                             />
                         )}
                     </Suspense>

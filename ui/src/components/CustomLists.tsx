@@ -334,6 +334,7 @@ export default function CustomLists({
                             {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Plus className="h-4 w-4" />}
                             Сохранить
                         </Button>
+                        <Button variant="secondary" disabled={busy} onClick={()=>fileRef.current?.click()}>Загрузить файл</Button>
                         <input
                             ref={fileRef}
                             type="file"
@@ -344,7 +345,7 @@ export default function CustomLists({
                                 const f = e.currentTarget.files?.[0]
                                 if (f) void putFile({ name, kind }, f)
                             }}
-                            className="text-xs text-muted-foreground file:mr-2 file:rounded-md file:border file:border-input file:bg-transparent file:px-3 file:py-1.5 file:text-sm"
+                            className="hidden"
                         />
                     </div>
                 </div>
@@ -440,6 +441,7 @@ function ListEditor({
                             ? `Сейчас из файла ${list.filename}. Выберите другой файл — он заменит список целиком.`
                             : 'Выберите файл — он заменит список целиком.'}
                     </label>
+                    <Button variant="secondary" disabled={busy} onClick={()=>fileRef.current?.click()}>Загрузить файл</Button>
                     <input
                         id="sp-edit-file"
                         ref={fileRef}
@@ -451,7 +453,7 @@ function ListEditor({
                             const f = e.currentTarget.files?.[0]
                             if (f) void onFile(f)
                         }}
-                        className="mt-1 block text-xs text-muted-foreground file:mr-2 file:rounded-md file:border file:border-input file:bg-transparent file:px-3 file:py-1.5 file:text-sm"
+                        className="hidden"
                     />
                 </div>
             )}

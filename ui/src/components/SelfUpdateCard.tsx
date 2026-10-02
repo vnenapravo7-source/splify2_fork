@@ -70,7 +70,7 @@ export default function SelfUpdateCard({
     }
 
     return (
-        <Card>
+        <Card id="sp-interface-update">
             <CardHeader className="pb-2">
                 <CardTitle className="text-base">{t('Интерфейс')}</CardTitle>
             </CardHeader>
@@ -87,6 +87,7 @@ export default function SelfUpdateCard({
                         value={ver}
                         onChange={(e) => setVer(e.target.value)}
                         aria-label={t('Версия интерфейса')}
+                        title={releaseName(ver,info?.names)}
                         className="sp-release-select rounded-lg border border-input bg-transparent px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                     >
                         {info === null && <option value="">{t('загрузка…')}</option>}
@@ -94,8 +95,8 @@ export default function SelfUpdateCard({
                         {/* Подпись — название выпуска, значение — версия: ею собирается имя
                             файла пакета, и пробелу там места нет. */}
                         {versions.map((v, i) => (
-                            <option key={v} value={v}>
-                                {releaseName(v, info?.names)}
+                            <option key={v} value={v} aria-label={releaseName(v,info?.names)}>
+                                {v}
                                 {i === 0 ? ` — ${t('свежая')}` : ''}
                             </option>
                         ))}
