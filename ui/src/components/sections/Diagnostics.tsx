@@ -189,8 +189,8 @@ export default function Diagnostics({ live }: { live: Live }) {
                 </CardHeader>
                 <CardContent className="space-y-2">
                     {log && log.length > 0 && (
-                        <div className="relative">
-                            <Search className="absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+                        <div className="sp-search relative">
+                            <Search className="h-4 w-4 shrink-0 text-muted-foreground pointer-events-none" />
                             <input
                                 type="text"
                                 value={logFilter}
@@ -202,7 +202,7 @@ export default function Diagnostics({ live }: { live: Live }) {
                                 <button
                                     type="button"
                                     onClick={() => setLogFilter('')}
-                                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                                    className="shrink-0 text-muted-foreground hover:text-foreground"
                                     aria-label="Очистить поиск"
                                 >
                                     <X className="h-3.5 w-3.5" />

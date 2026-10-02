@@ -153,3 +153,4 @@ body:has(.sp-confirm-overlay) .sp-apply-portal {visibility:hidden!important;}
  .sp-root .sp-list-schedule > select {grid-column:1 / -1!important;width:100%!important;max-width:100%!important;}
  .sp-root .sp-list-schedule > div {width:100%!important;}
 }
+@media(max-width:767px){.sp-root .sp-catalog-toolbar > .sp-search {flex:1 0 100%!important;width:100%!important;}}
